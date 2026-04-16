@@ -1,11 +1,5 @@
 import { useState } from 'react'
-
-const SERVICES = [
-  'Vehicle / Fleet Wrap',
-  'Printing & Large Format',
-  'Marketing & Promo Materials',
-  'Not Sure / General Inquiry',
-]
+import { contactInquiryOptions } from '../data/services'
 
 interface FormData {
   name: string
@@ -115,7 +109,7 @@ export default function ContactForm() {
         <input
           id="email" name="email" type="email"
           value={form.email} onChange={handleChange}
-          placeholder="jane@company.com"
+          placeholder="you@example.com"
           className={fieldClass(errors.email)}
           aria-describedby={errors.email ? 'email-error' : undefined}
         />
@@ -130,7 +124,7 @@ export default function ContactForm() {
         <input
           id="phone" name="phone" type="tel"
           value={form.phone} onChange={handleChange}
-          placeholder="(416) 555-0100"
+          placeholder="(702) 551-7315"
           className={fieldClass()}
         />
       </div>
@@ -147,7 +141,11 @@ export default function ContactForm() {
             className={`${fieldClass()} appearance-none cursor-pointer pr-10`}
           >
             <option value="">Select a service…</option>
-            {SERVICES.map(s => <option key={s} value={s}>{s}</option>)}
+            {contactInquiryOptions.map((s) => (
+              <option key={s} value={s}>
+                {s}
+              </option>
+            ))}
           </select>
           <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-brand-muted">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -165,7 +163,7 @@ export default function ContactForm() {
         <textarea
           id="message" name="message" rows={5}
           value={form.message} onChange={handleChange}
-          placeholder="Tell us about your project — vehicle type, quantity, timeline, any design notes…"
+          placeholder="Tell us about your project, vehicle type, quantity, timeline, any design notes…"
           className={`${fieldClass(errors.message)} resize-none`}
           aria-describedby={errors.message ? 'message-error' : undefined}
         />

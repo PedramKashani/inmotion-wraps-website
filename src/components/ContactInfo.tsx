@@ -8,8 +8,8 @@ const details = [
       </svg>
     ),
     label: 'Phone',
-    display: '(000) 000-0000',
-    href: 'tel:+10000000000',
+    display: '(702) 551-7315',
+    href: 'tel:+17025517315',
   },
   {
     icon: (
@@ -19,8 +19,8 @@ const details = [
       </svg>
     ),
     label: 'Email',
-    display: 'info@inmotionwraps.com',
-    href: 'mailto:info@inmotionwraps.com',
+    display: 'inmotionwraps@gmail.com',
+    href: 'mailto:inmotionwraps@gmail.com',
   },
   {
     icon: (
@@ -41,7 +41,7 @@ const details = [
       </svg>
     ),
     label: 'Location',
-    display: 'Greater Toronto Area, ON',
+    display: 'Las Vegas, NV',
     href: null,
   },
 ]

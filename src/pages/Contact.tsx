@@ -1,8 +1,14 @@
 import PageHero from '../components/PageHero'
 import ContactForm from '../components/ContactForm'
 import ContactInfo from '../components/ContactInfo'
+import { usePageMeta } from '../hooks/usePageMeta'
 
 export default function Contact() {
+  usePageMeta(
+    'Contact, InMotion Wraps & Print | Request a Quote',
+    'Request a quote from InMotion Wraps & Print LLC, vehicle wraps, signs, banners, trade show graphics, or marketing print. Call (702) 551-7315. We respond within one business day.',
+  )
+
   return (
     <main>
       <PageHero

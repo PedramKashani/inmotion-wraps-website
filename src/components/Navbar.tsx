@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import logoSrc from '../assets/logo.webp'
+import logoLightSrc from '../assets/logo-light.webp'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -26,11 +26,14 @@ export default function Navbar() {
         borderBottom: scrolled ? '1px solid #2A2A2A' : '1px solid transparent',
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+      <div className="relative max-w-7xl mx-auto px-6 flex items-center justify-end md:justify-between h-16">
 
-        {/* Logo */}
-        <Link to="/" className="flex items-center">
-          <img src={logoSrc} alt="InMotion Wraps" className="h-8 w-auto" />
+        {/* Logo — centered on mobile, left on desktop */}
+        <Link
+          to="/"
+          className="flex items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:static md:translate-x-0 md:translate-y-0 md:left-auto z-10"
+        >
+          <img src={logoLightSrc} alt="InMotion Wraps & Print" className="h-8 w-auto" />
         </Link>
 
         {/* Desktop nav */}

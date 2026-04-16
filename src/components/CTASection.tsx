@@ -1,26 +1,31 @@
-import { Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface CTASectionProps {
-  headline: string
-  subtext: string
-  buttonLabel: string
-  buttonLink: string
+  headline: string;
+  subtext: string;
+  buttonLabel: string;
+  buttonLink: string;
 }
 
-export default function CTASection({ headline, subtext, buttonLabel, buttonLink }: CTASectionProps) {
+export default function CTASection({
+  headline,
+  subtext,
+  buttonLabel,
+  buttonLink,
+}: CTASectionProps) {
   return (
     <section className="py-20 bg-brand-surface border-y border-brand-border">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.7, ease: 'easeOut' }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
         className="max-w-3xl mx-auto px-6 text-center"
       >
         <h2
           className="font-display text-brand-text leading-none mb-4"
-          style={{ fontSize: 'clamp(2.8rem, 7vw, 5.5rem)' }}
+          style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)" }}
         >
           {headline}
         </h2>
@@ -33,5 +38,5 @@ export default function CTASection({ headline, subtext, buttonLabel, buttonLink 
         </Link>
       </motion.div>
     </section>
-  )
+  );
 }
