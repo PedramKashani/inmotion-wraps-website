@@ -10,14 +10,16 @@ interface ServiceCategorySectionProps {
 }
 
 const externalCategoryImages: Record<string, string> = {
+  /** Gloved tech working a vehicle hood in-shop — reads clearly as hands-on wrap / finish work */
   "wraps-graphics":
-    "https://images.unsplash.com/photo-1625047509168-a7026f36de04?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1632605157148-6313421c504b?auto=format&fit=crop&w=1600&q=80",
+  /** https://unsplash.com/photos/a-black-and-white-photo-of-a-store-window-SYquPBkhKl8 */
   "signs-decals":
-    "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1600&q=80",
-  "banners-trade-show":
-    "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1600&q=80",
-  "marketing-print":
-    "https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?auto=format&fit=crop&w=1600&q=80",
+    "https://images.unsplash.com/photo-1740955803167-be35f9bfddd2?auto=format&fit=crop&w=1600&q=80",
+  /** On-brand booth / large-format mock — asset in `/public` */
+  "banners-trade-show": "/services-banners-trade-show.png",
+  /** On-brand marketing print & stationery mock — asset in `/public` */
+  "marketing-print": "/services-marketing-print.png",
 };
 
 function CategoryVisualPanel({
@@ -58,10 +60,20 @@ function CategoryVisualPanel({
       <div className="relative z-10 h-full min-h-[inherit]">
         <img
           src={externalCategoryImages[categoryId]}
-          alt="Temporary service placeholder"
+          alt={
+            categoryId === "wraps-graphics"
+              ? "Technician in gloves working on a vehicle finish in the shop"
+              : categoryId === "signs-decals"
+                ? "Black and white photograph of a retail store window"
+                : categoryId === "banners-trade-show"
+                  ? "Trade show booth with banners, fabric displays, flags, and large-format signage"
+                  : categoryId === "marketing-print"
+                    ? "Marketing products and stationery: brochures, business cards, labels, and branded print on display"
+                    : "Example photograph for this service category"
+          }
           loading="lazy"
           className="h-full w-full object-cover"
-          referrerPolicy="no-referrer"
+          referrerPolicy={externalCategoryImages[categoryId].startsWith("http") ? "no-referrer" : undefined}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
         <div className="absolute right-5 bottom-5 text-brand-accent/90 scale-[1.1] lg:scale-[1.2] drop-shadow-[0_0_30px_rgba(245,196,0,0.2)]">

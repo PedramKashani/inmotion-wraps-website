@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import logoLightSrc from '../assets/logo-light.webp'
 
 const GOLD = '#C9A961'
@@ -12,6 +12,7 @@ const MUTED = '#6E6A63'
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const reduceMotion = useReducedMotion()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30)
@@ -50,12 +51,32 @@ export default function Navbar() {
         borderBottom: scrolled ? `1px solid ${HAIR2}` : '1px solid transparent',
       }}
     >
-      {/* Left — logo */}
+      {/* Left — logo (desktop col 1; mobile centered in row) */}
       <Link
         to="/"
+        className="nav-logo-link"
         style={{ display: 'flex', alignItems: 'center', gap: 10, justifySelf: 'start' }}
       >
-        <img src={logoLightSrc} alt="InMotion Wraps & Print" style={{ height: 28, width: 'auto' }} />
+        <motion.span
+          style={{ display: 'inline-flex', lineHeight: 0 }}
+          initial={false}
+          animate={
+            reduceMotion
+              ? false
+              : { scale: [1, 1.04, 1] }
+          }
+          transition={{
+            duration: 2.75,
+            repeat: reduceMotion ? 0 : Infinity,
+            ease: 'easeInOut',
+          }}
+          whileHover={
+            reduceMotion ? undefined : { scale: 1.08, transition: { duration: 0.2, ease: 'easeOut' } }
+          }
+          whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+        >
+          <img src={logoLightSrc} alt="InMotion Wraps & Print" style={{ height: 28, width: 'auto', display: 'block' }} />
+        </motion.span>
       </Link>
 
       {/* Center — nav links */}
@@ -64,7 +85,6 @@ export default function Navbar() {
         style={{ display: 'flex', gap: 44, justifySelf: 'center' }}
       >
         {[
-          { to: '/#capabilities', label: 'Capabilities' },
           { to: '/#work', label: 'Work' },
           { to: '/services', label: 'Services' },
           { to: '/contact', label: 'Contact' },
@@ -156,18 +176,31 @@ export default function Navbar() {
             style={{
               position: 'absolute',
               top: '100%',
-              left: 0,
               right: 0,
-              backgroundColor: 'rgba(10,10,10,0.96)',
-              backdropFilter: 'blur(16px)',
-              borderBottom: `1px solid ${HAIR2}`,
+              width: 'min(320px, 100vw)',
               overflow: 'hidden',
-              gridColumn: '1 / -1',
+              boxShadow: '-12px 24px 48px rgba(0,0,0,0.35)',
             }}
           >
-            <nav style={{ display: 'flex', flexDirection: 'column', padding: '24px', gap: 20 }}>
+            <div
+              style={{
+                backgroundColor: 'rgba(10,10,10,0.96)',
+                backdropFilter: 'blur(16px)',
+                borderBottom: `1px solid ${HAIR2}`,
+                borderLeft: `1px solid ${HAIR2}`,
+              }}
+            >
+            <nav
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'flex-end',
+                padding: '24px',
+                gap: 20,
+                textAlign: 'right',
+              }}
+            >
               {[
-                { to: '/#capabilities', label: 'Capabilities' },
                 { to: '/#work', label: 'Work' },
                 { to: '/services', label: 'Services' },
                 { to: '/contact', label: 'Contact' },
@@ -201,12 +234,14 @@ export default function Navbar() {
                   padding: '14px 20px',
                   border: `1px solid ${GOLD}`,
                   textAlign: 'center',
+                  alignSelf: 'flex-end',
                   marginTop: 4,
                 }}
               >
                 Request a Quote
               </Link>
             </nav>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -215,9 +250,24 @@ export default function Navbar() {
         @media (max-width: 900px) {
           .nav-links-desktop { display: none !important; }
           .nav-right-desktop { display: none !important; }
+          .nav-logo-link {
+            grid-column: 2;
+            grid-row: 1;
+            justify-self: center !important;
+          }
+          .nav-hamburger {
+            grid-column: 3;
+            grid-row: 1;
+            justify-self: end;
+          }
         }
         @media (min-width: 901px) {
           .nav-hamburger { display: none !important; }
+          .nav-logo-link {
+            grid-column: 1;
+            grid-row: 1;
+            justify-self: start !important;
+          }
         }
       `}</style>
     </header>
