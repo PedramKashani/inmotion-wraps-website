@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import SplitWords from './SplitWords'
 
 interface PageHeroProps {
   label: string
@@ -32,24 +33,33 @@ export default function PageHero({ label, headline, subtext }: PageHeroProps) {
       <div className="absolute bottom-0 left-0 right-0 h-px bg-brand-border" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
+        {/* Label slides in */}
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: 'easeOut' }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="font-heading font-medium text-brand-accent text-[10px] tracking-[0.28em] uppercase mb-4"
         >
-          <p className="font-heading font-medium text-brand-accent text-[10px] tracking-[0.28em] uppercase mb-4">
-            {label}
-          </p>
-          <h1
-            className="font-heading font-bold text-brand-text leading-none mb-5"
-            style={{ fontSize: 'clamp(2.5rem, 7vw, 5rem)' }}
-          >
-            {headline}
-          </h1>
-          <p className="text-brand-secondary text-base md:text-lg max-w-xl leading-relaxed">
-            {subtext}
-          </p>
-        </motion.div>
+          {label}
+        </motion.p>
+
+        {/* Headline — word-by-word mask reveal */}
+        <h1
+          className="font-heading font-bold text-brand-text leading-none mb-5"
+          style={{ fontSize: 'clamp(2.5rem, 7vw, 5rem)' }}
+        >
+          <SplitWords text={headline} delay={0.1} stagger={0.06} />
+        </h1>
+
+        {/* Subtext fades up */}
+        <motion.p
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.35, ease: 'easeOut' }}
+          className="text-brand-secondary text-base md:text-lg max-w-xl leading-relaxed"
+        >
+          {subtext}
+        </motion.p>
       </div>
     </section>
   )

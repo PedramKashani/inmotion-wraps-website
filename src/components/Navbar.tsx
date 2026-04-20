@@ -1,81 +1,149 @@
 import { useState, useEffect } from 'react'
-import { Link, NavLink } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import logoLightSrc from '../assets/logo-light.webp'
+
+const GOLD = '#C9A961'
+const HAIR2 = '#262523'
+const INK = '#EDEAE4'
+const INK2 = '#B8B4AC'
+const MUTED = '#6E6A63'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40)
+    const onScroll = () => setScrolled(window.scrollY > 30)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `text-sm font-medium transition-colors duration-200 cursor-pointer ${
-      isActive ? 'text-brand-accent' : 'text-brand-secondary hover:text-brand-text'
-    }`
+  const linkStyle: React.CSSProperties = {
+    fontFamily: '"Barlow Condensed", sans-serif',
+    fontWeight: 400,
+    fontSize: 11,
+    letterSpacing: '0.28em',
+    textTransform: 'uppercase',
+    color: INK2,
+    position: 'relative',
+    paddingBottom: 3,
+    transition: 'color 0.3s',
+  }
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        backgroundColor: scrolled ? '#0D0D0D' : 'transparent',
-        borderBottom: scrolled ? '1px solid #2A2A2A' : '1px solid transparent',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 100,
+        display: 'grid',
+        gridTemplateColumns: '1fr auto 1fr',
+        alignItems: 'center',
+        padding: scrolled ? '16px 48px' : '26px 48px',
+        transition: 'all 0.4s cubic-bezier(0.2,0.8,0.2,1)',
+        backgroundColor: scrolled ? 'rgba(10,10,10,0.82)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(16px)' : undefined,
+        WebkitBackdropFilter: scrolled ? 'blur(16px)' : undefined,
+        borderBottom: scrolled ? `1px solid ${HAIR2}` : '1px solid transparent',
       }}
     >
-      <div className="relative max-w-7xl mx-auto px-6 flex items-center justify-end md:justify-between h-16">
+      {/* Left — logo */}
+      <Link
+        to="/"
+        style={{ display: 'flex', alignItems: 'center', gap: 10, justifySelf: 'start' }}
+      >
+        <img src={logoLightSrc} alt="InMotion Wraps & Print" style={{ height: 28, width: 'auto' }} />
+      </Link>
 
-        {/* Logo — centered on mobile, left on desktop */}
-        <Link
-          to="/"
-          className="flex items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:static md:translate-x-0 md:translate-y-0 md:left-auto z-10"
-        >
-          <img src={logoLightSrc} alt="InMotion Wraps & Print" className="h-8 w-auto" />
-        </Link>
-
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          <NavLink to="/" end className={navLinkClass}>Home</NavLink>
-          <NavLink to="/services" className={navLinkClass}>Services</NavLink>
-          <NavLink to="/contact" className={navLinkClass}>Contact</NavLink>
-        </nav>
-
-        {/* Desktop CTA */}
-        <div className="hidden md:block">
-          <Link
-            to="/contact"
-            className="bg-brand-accent text-brand-bg font-semibold text-xs px-5 py-2.5 uppercase tracking-widest rounded cursor-pointer hover:brightness-110 transition-all duration-200"
+      {/* Center — nav links */}
+      <nav
+        className="nav-links-desktop"
+        style={{ display: 'flex', gap: 44, justifySelf: 'center' }}
+      >
+        {[
+          { to: '/#capabilities', label: 'Capabilities' },
+          { to: '/#work', label: 'Work' },
+          { to: '/services', label: 'Services' },
+          { to: '/contact', label: 'Contact' },
+        ].map(({ to, label }) => (
+          <a
+            key={label}
+            href={to}
+            style={linkStyle}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = INK }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = INK2 }}
           >
-            Get a Quote
-          </Link>
-        </div>
+            {label}
+          </a>
+        ))}
+      </nav>
 
-        {/* Hamburger */}
-        <button
-          className="md:hidden text-brand-text cursor-pointer p-1.5 -mr-1.5"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={menuOpen}
+      {/* Right — phone + CTA */}
+      <div
+        className="nav-right-desktop"
+        style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: 28 }}
+      >
+        <a
+          href="tel:7025517315"
+          style={{
+            fontFamily: '"DM Sans", system-ui, sans-serif',
+            fontSize: 12,
+            color: MUTED,
+            letterSpacing: '0.04em',
+            fontWeight: 400,
+          }}
         >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            {menuOpen ? (
-              <>
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </>
-            ) : (
-              <>
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </>
-            )}
-          </svg>
-        </button>
+          +1 (702) 551 7315
+        </a>
+        <Link
+          to="/contact"
+          style={{
+            fontFamily: '"Barlow Condensed", sans-serif',
+            fontWeight: 500,
+            fontSize: 11,
+            letterSpacing: '0.26em',
+            textTransform: 'uppercase',
+            color: INK,
+            padding: '12px 20px',
+            border: `1px solid ${HAIR2}`,
+            borderRadius: 1,
+            transition: 'all 0.3s',
+            whiteSpace: 'nowrap',
+          }}
+          onMouseEnter={e => {
+            const el = e.currentTarget as HTMLElement
+            el.style.borderColor = GOLD
+            el.style.color = GOLD
+          }}
+          onMouseLeave={e => {
+            const el = e.currentTarget as HTMLElement
+            el.style.borderColor = HAIR2
+            el.style.color = INK
+          }}
+        >
+          Request a Quote
+        </Link>
       </div>
+
+      {/* Mobile hamburger */}
+      <button
+        className="nav-hamburger"
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+        aria-expanded={menuOpen}
+        style={{ justifySelf: 'end', background: 'none', border: 'none', cursor: 'pointer', color: INK, padding: '6px' }}
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+          {menuOpen ? (
+            <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
+          ) : (
+            <><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></>
+          )}
+        </svg>
+      </button>
 
       {/* Mobile menu */}
       <AnimatePresence>
@@ -85,23 +153,73 @@ export default function Navbar() {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden overflow-hidden bg-brand-surface border-t border-brand-border"
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              right: 0,
+              backgroundColor: 'rgba(10,10,10,0.96)',
+              backdropFilter: 'blur(16px)',
+              borderBottom: `1px solid ${HAIR2}`,
+              overflow: 'hidden',
+              gridColumn: '1 / -1',
+            }}
           >
-            <nav className="flex flex-col px-6 py-5 gap-5">
-              <NavLink to="/" end onClick={() => setMenuOpen(false)} className={navLinkClass}>Home</NavLink>
-              <NavLink to="/services" onClick={() => setMenuOpen(false)} className={navLinkClass}>Services</NavLink>
-              <NavLink to="/contact" onClick={() => setMenuOpen(false)} className={navLinkClass}>Contact</NavLink>
+            <nav style={{ display: 'flex', flexDirection: 'column', padding: '24px', gap: 20 }}>
+              {[
+                { to: '/#capabilities', label: 'Capabilities' },
+                { to: '/#work', label: 'Work' },
+                { to: '/services', label: 'Services' },
+                { to: '/contact', label: 'Contact' },
+              ].map(({ to, label }) => (
+                <a
+                  key={label}
+                  href={to}
+                  onClick={() => setMenuOpen(false)}
+                  style={{
+                    fontFamily: '"Barlow Condensed", sans-serif',
+                    fontWeight: 400,
+                    fontSize: 13,
+                    letterSpacing: '0.28em',
+                    textTransform: 'uppercase',
+                    color: INK2,
+                  }}
+                >
+                  {label}
+                </a>
+              ))}
               <Link
                 to="/contact"
                 onClick={() => setMenuOpen(false)}
-                className="bg-brand-accent text-brand-bg font-semibold text-xs px-5 py-3 uppercase tracking-widest rounded text-center cursor-pointer hover:brightness-110 transition-all duration-200"
+                style={{
+                  fontFamily: '"Barlow Condensed", sans-serif',
+                  fontWeight: 500,
+                  fontSize: 11,
+                  letterSpacing: '0.26em',
+                  textTransform: 'uppercase',
+                  color: INK,
+                  padding: '14px 20px',
+                  border: `1px solid ${GOLD}`,
+                  textAlign: 'center',
+                  marginTop: 4,
+                }}
               >
-                Get a Quote
+                Request a Quote
               </Link>
             </nav>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .nav-links-desktop { display: none !important; }
+          .nav-right-desktop { display: none !important; }
+        }
+        @media (min-width: 901px) {
+          .nav-hamburger { display: none !important; }
+        }
+      `}</style>
     </header>
   )
 }

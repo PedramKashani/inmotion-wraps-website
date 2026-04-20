@@ -17,7 +17,6 @@ export default function Cursor() {
   const ringY = useSpring(y, { stiffness: 120, damping: 18, mass: 0.5 })
 
   useEffect(() => {
-    // Only activate for devices with a fine pointer (mouse)
     if (!window.matchMedia('(pointer: fine)').matches) return
 
     document.body.style.cursor = 'none'
@@ -25,9 +24,7 @@ export default function Cursor() {
     const onMove = (e: MouseEvent) => {
       x.set(e.clientX)
       y.set(e.clientY)
-      if (!visible) setVisible(true)
-
-      // Detect hover by computed cursor style of element under the pointer
+      setVisible(true)
       const el = document.elementFromPoint(e.clientX, e.clientY)
       setHovering(!!el && window.getComputedStyle(el).cursor === 'pointer')
     }
@@ -37,7 +34,7 @@ export default function Cursor() {
       window.removeEventListener('mousemove', onMove)
       document.body.style.cursor = ''
     }
-  }, [])
+  }, [x, y])
 
   if (!visible) return null
 
