@@ -15,13 +15,13 @@ export default function CTASection({
   buttonLink,
 }: CTASectionProps) {
   return (
-    <section className="py-20 bg-brand-surface border-y border-brand-border">
+    <section className="py-12 md:py-20 bg-brand-surface border-y border-brand-border">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        className="max-w-3xl mx-auto px-6 text-center"
+        className="max-w-3xl mx-auto px-4 sm:px-6 text-center"
       >
         <h2
           className="font-display text-brand-text leading-none mb-4"

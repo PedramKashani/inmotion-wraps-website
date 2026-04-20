@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence, useReducedMotion, LayoutGroup } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { serviceGroups } from '../data/services'
 
 type SceneId = (typeof serviceGroups)[number]['id']
 
 const SCENE_MS = 6000
 
-const springSnappy = { type: 'spring' as const, stiffness: 420, damping: 34, mass: 0.85 }
 const springSoft = { type: 'spring' as const, stiffness: 180, damping: 22, mass: 0.9 }
-const springPop = { type: 'spring' as const, stiffness: 320, damping: 18, mass: 0.6 }
 
 const shellVariants = {
   initial: { opacity: 0, scale: 0.96, y: 14, filter: 'blur(6px)' },
@@ -28,11 +26,6 @@ const shellVariants = {
   },
 }
 
-function sceneCaption(id: SceneId): string {
-  const g = serviceGroups.find((x) => x.id === id)
-  if (!g) return id
-  return `${g.num} ${g.shortTitle}`
-}
 
 function SceneChrome({ children }: { children: React.ReactNode }) {
   return (
@@ -56,45 +49,6 @@ function SceneChrome({ children }: { children: React.ReactNode }) {
 function WrapsScene({ reduceMotion }: { reduceMotion: boolean | null }) {
   return (
     <SceneChrome>
-      <svg
-        className="absolute inset-0 w-full h-full text-brand-border/55"
-        viewBox="0 0 320 120"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <motion.path
-          d="M28 88 L40 62 L78 56 L102 34 L218 34 L248 52 L288 52 L302 64 L302 88 L278 88 Q268 88 264 80 L264 76 Q260 68 248 68 Q236 68 232 76 L232 80 Q228 88 218 88 L118 88 Q108 88 104 80 L104 76 Q100 68 88 68 Q76 68 72 76 L72 80 Q68 88 58 88 Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.25"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          initial={reduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ pathLength: { duration: reduceMotion ? 0 : 2, ease: [0.16, 1, 0.3, 1] } }}
-        />
-        <motion.circle
-          cx="88"
-          cy="78"
-          r="10"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          initial={reduceMotion ? { opacity: 0.9 } : { opacity: 0, scale: 0.4 }}
-          animate={{ opacity: 0.9, scale: 1 }}
-          transition={reduceMotion ? { duration: 0 } : springPop}
-        />
-        <motion.circle
-          cx="248"
-          cy="78"
-          r="10"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          initial={reduceMotion ? { opacity: 0.9 } : { opacity: 0, scale: 0.4 }}
-          animate={{ opacity: 0.9, scale: 1 }}
-          transition={reduceMotion ? { duration: 0 } : { ...springPop, delay: 0.12 }}
-        />
-      </svg>
       <motion.div
         className="absolute inset-0 rounded-2xl pointer-events-none"
         style={{
@@ -115,32 +69,6 @@ function WrapsScene({ reduceMotion }: { reduceMotion: boolean | null }) {
 function SignsScene({ reduceMotion }: { reduceMotion: boolean | null }) {
   return (
     <SceneChrome>
-      <svg
-        className="absolute inset-0 w-full h-full text-brand-border/55"
-        viewBox="0 0 320 120"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <motion.path
-          d="M118 22 L202 22 L202 94 L118 94 Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.2"
-          strokeLinejoin="round"
-          initial={reduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: reduceMotion ? 0 : 1.05, ease: [0.16, 1, 0.3, 1] }}
-        />
-        <motion.path
-          d="M160 94 L160 102 M142 102 L178 102"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          initial={reduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ delay: reduceMotion ? 0 : 0.5, duration: reduceMotion ? 0 : 0.55, ease: [0.33, 1, 0.68, 1] }}
-        />
-      </svg>
       <motion.div
         className="absolute pointer-events-none rounded-sm"
         style={{
@@ -165,32 +93,6 @@ function SignsScene({ reduceMotion }: { reduceMotion: boolean | null }) {
 function BannersScene({ reduceMotion }: { reduceMotion: boolean | null }) {
   return (
     <SceneChrome>
-      <svg
-        className="absolute inset-0 w-full h-full text-brand-border/55"
-        viewBox="0 0 320 120"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <motion.path
-          d="M44 36 L276 36 L276 78 L44 78 Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.2"
-          strokeLinejoin="round"
-          initial={reduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: reduceMotion ? 0 : 1.1, ease: [0.16, 1, 0.3, 1] }}
-        />
-        <motion.path
-          d="M158 78 L158 96 M138 96 L182 96"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          strokeLinecap="round"
-          initial={reduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ delay: reduceMotion ? 0 : 0.45, duration: reduceMotion ? 0 : 0.55, ease: [0.33, 1, 0.68, 1] }}
-        />
-      </svg>
       <motion.div
         className="absolute inset-[22%_8%_30%_8%] rounded-md pointer-events-none"
         style={{
@@ -211,32 +113,6 @@ function BannersScene({ reduceMotion }: { reduceMotion: boolean | null }) {
 function MarketingScene({ reduceMotion }: { reduceMotion: boolean | null }) {
   return (
     <SceneChrome>
-      <svg
-        className="absolute inset-0 w-full h-full text-brand-border/55"
-        viewBox="0 0 320 120"
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <motion.path
-          d="M148 30 L228 30 L228 98 L148 98 Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.1"
-          strokeLinejoin="round"
-          initial={reduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: reduceMotion ? 0 : 0.85, ease: [0.16, 1, 0.3, 1] }}
-        />
-        <motion.path
-          d="M92 38 L172 38 L172 106 L92 106 Z"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.1"
-          strokeLinejoin="round"
-          initial={reduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ delay: reduceMotion ? 0 : 0.2, duration: reduceMotion ? 0 : 0.95, ease: [0.16, 1, 0.3, 1] }}
-        />
-      </svg>
       <motion.div
         className="absolute inset-[18%_12%_22%_12%] rounded-sm pointer-events-none"
         style={{
@@ -326,8 +202,8 @@ export default function VinylWrapAnimation() {
   }, [reduceMotion])
 
   return (
-    <div className="relative mx-auto w-full max-w-[min(100%,380px)] md:max-w-[440px] h-[132px] md:h-[148px] select-none">
-      <div className="absolute inset-x-0 top-0 bottom-11 overflow-hidden" aria-hidden>
+    <div className="relative mx-auto w-full max-w-[min(100%,380px)] md:max-w-[440px] h-[110px] md:h-[124px] select-none">
+      <div className="absolute inset-0 overflow-hidden" aria-hidden>
         <AnimatePresence mode="wait">
           <motion.div
             key={scene}
@@ -342,53 +218,6 @@ export default function VinylWrapAnimation() {
         </AnimatePresence>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 flex flex-col items-center gap-2 pt-0.5">
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={scene}
-            initial={reduceMotion ? undefined : { opacity: 0, y: 6, filter: 'blur(4px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            exit={reduceMotion ? undefined : { opacity: 0, y: -4, filter: 'blur(3px)' }}
-            transition={reduceMotion ? { duration: 0 } : springSnappy}
-            className="font-heading text-[10px] uppercase tracking-[0.2em] text-brand-muted text-center leading-tight"
-          >
-            {sceneCaption(scene)}
-          </motion.span>
-        </AnimatePresence>
-
-        <LayoutGroup>
-          <div className="relative flex flex-wrap items-center justify-center gap-1.5 max-w-full px-1">
-            {serviceGroups.map((g) => {
-              const active = g.id === scene
-              return (
-                <motion.button
-                  key={g.id}
-                  type="button"
-                  onClick={() => setScene(g.id)}
-                  aria-label={`Show ${g.title} illustration`}
-                  className="relative h-7 w-7 flex items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/60 shrink-0"
-                  whileTap={reduceMotion ? undefined : { scale: 0.92 }}
-                  transition={springSnappy}
-                >
-                  <span
-                    className={`h-1.5 rounded-full transition-colors duration-200 ${
-                      active ? 'w-5 bg-brand-accent' : 'w-1.5 bg-brand-border hover:bg-brand-muted'
-                    }`}
-                  />
-                  {active && !reduceMotion && (
-                    <motion.span
-                      layoutId="sceneProgressRing"
-                      className="pointer-events-none absolute inset-0 rounded-full border border-brand-accent/35"
-                      initial={false}
-                      transition={{ type: 'spring', stiffness: 300, damping: 28 }}
-                    />
-                  )}
-                </motion.button>
-              )
-            })}
-          </div>
-        </LayoutGroup>
-      </div>
     </div>
   )
 }

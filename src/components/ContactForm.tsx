@@ -70,7 +70,7 @@ export default function ContactForm() {
 
   if (submitted) {
     return (
-      <div className="flex flex-col items-start justify-center min-h-[400px]">
+      <div className="flex flex-col items-start justify-center min-h-[300px] md:min-h-[400px]">
         <div className="w-12 h-12 rounded-full bg-brand-accent/10 border border-brand-accent/30 flex items-center justify-center mb-6">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5C400" strokeWidth="2.5">
             <polyline points="20 6 9 17 4 12" />
@@ -85,7 +85,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4 md:gap-5">
       {/* Full Name */}
       <div>
         <label htmlFor="name" className={labelClass}>
@@ -161,7 +161,7 @@ export default function ContactForm() {
           Project Details <span className="text-brand-accent">*</span>
         </label>
         <textarea
-          id="message" name="message" rows={5}
+          id="message" name="message" rows={4}
           value={form.message} onChange={handleChange}
           placeholder="Tell us about your project, vehicle type, quantity, timeline, any design notes…"
           className={`${fieldClass(errors.message)} resize-none`}

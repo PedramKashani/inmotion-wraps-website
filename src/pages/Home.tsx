@@ -12,8 +12,8 @@ const INK2 = '#B8B4AC'
 const MUTED = '#6E6A63'
 const HAIR  = '#1C1C1C'
 const HAIR2 = '#262523'
-const GOLD  = '#C9A961'
-const GOLDS = '#8A7642'
+const GOLD  = '#F5C400'
+const GOLDS = '#C9A000'
 
 /** Matches ContactInfo / business inbox */
 const CONTACT_EMAIL = 'inmotionwraps@gmail.com'
@@ -83,7 +83,7 @@ const Arrow = () => (
 // ─── Component ───────────────────────────────────────────────────────────────
 export default function Home() {
   usePageMeta(
-    'InMotion Wraps & Print — Vehicle Wraps, Signs & Printing',
+    'InMotion Wraps & Print | Vehicle Wraps, Signs & Printing',
     'InMotion Wraps & Print LLC: vehicle wraps, fleet graphics, signs and decals, trade show displays, large format printing, and marketing materials. Call (702) 551-7315.',
   )
 
@@ -166,28 +166,6 @@ export default function Home() {
           }}
         />
 
-        {/* Meta — top-left */}
-        <div
-          className="hero-meta-top"
-          style={{
-            position: 'absolute',
-            top: 120,
-            left: 48,
-            fontFamily: '"Barlow Condensed", sans-serif',
-            fontSize: 12,
-            letterSpacing: '0.28em',
-            textTransform: 'uppercase',
-            color: INK2,
-            display: 'flex',
-            alignItems: 'center',
-            gap: 14,
-            textShadow: '0 1px 2px rgba(0,0,0,0.9), 0 0 24px rgba(0,0,0,0.5)',
-          }}
-        >
-          <span style={{ width: 32, height: 1, background: GOLD, display: 'inline-block' }} />
-          <span>INMOTION &nbsp;/ &nbsp;WRAPS &amp; COATINGS</span>
-        </div>
-
         {/* Meta — top-right */}
         <div
           className="hero-meta-right"
@@ -207,7 +185,6 @@ export default function Home() {
         >
           <div><span style={{ color: INK, fontWeight: 500, letterSpacing: '0.2em' }}>EST</span> &nbsp;·&nbsp; MMXV</div>
           <div><span style={{ color: INK, fontWeight: 500, letterSpacing: '0.2em' }}>CERT</span> &nbsp;·&nbsp; 3M &nbsp;/ &nbsp;AVERY</div>
-          <div><span style={{ color: INK, fontWeight: 500, letterSpacing: '0.2em' }}>STUDIO</span> &nbsp;·&nbsp; CALL · MAIL</div>
         </div>
 
         {/* Hero body — bottom-left content */}
@@ -217,7 +194,7 @@ export default function Home() {
             maxWidth: 1440,
             width: '100%',
             margin: '0 auto',
-            padding: '0 48px 120px',
+            padding: '0 clamp(24px, 5vw, 48px) clamp(72px, 12vw, 120px)',
           }}
           className="hero-body"
         >
@@ -294,31 +271,46 @@ export default function Home() {
           </h1>
 
           {/* Sub */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.1 }}
-            style={{
-              marginTop: 44,
-              maxWidth: '52ch',
-              fontSize: '1.0625rem',
-              lineHeight: 1.7,
-              color: INK2,
-              fontWeight: 300,
-            }}
-          >
-            A finishing studio for the commercial vehicle — colour changes, fleet programmes,
-            storefront and large-format work. Measured to spec, installed by hand, delivered quiet.
-          </motion.p>
+          <div style={{ marginTop: 44, maxWidth: 480 }}>
+            <motion.p
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 1.1, ease: 'easeOut' }}
+              style={{
+                fontSize: '1rem',
+                lineHeight: 1.85,
+                color: INK2,
+                fontWeight: 300,
+                letterSpacing: '0.01em',
+              }}
+            >
+              Vehicle wraps, fleet graphics, and large-format work.
+            </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, delay: 1.26, ease: 'easeOut' }}
+              style={{
+                fontSize: '1rem',
+                lineHeight: 1.85,
+                color: MUTED,
+                fontWeight: 300,
+                letterSpacing: '0.01em',
+                marginTop: 2,
+              }}
+            >
+              Measured to spec. Installed to last.
+            </motion.p>
+          </div>
 
           {/* CTA row */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 1, delay: 1.3 }}
+            transition={{ duration: 1, delay: 1.45 }}
             style={{ marginTop: 56, display: 'flex', alignItems: 'center', gap: 36 }}
           >
-            <HeroCTA />
+            <PrimaryCTA />
             <a
               href="#work"
               style={{
@@ -358,7 +350,7 @@ export default function Home() {
           transition={{ duration: 1, delay: 1.6 }}
           style={{
             position: 'absolute',
-            bottom: 40,
+            bottom: 'max(24px, env(safe-area-inset-bottom, 24px))',
             left: '50%',
             transform: 'translateX(-50%)',
             fontFamily: '"Barlow Condensed", sans-serif',
@@ -377,71 +369,73 @@ export default function Home() {
         </motion.div>
 
         <style>{`
-          @media (max-width: 1180px) { .hero-meta-top, .hero-meta-right { display: none !important; } }
-          @media (max-width: 900px) { .hero-body { padding: 0 24px 80px !important; } }
+          @media (max-width: 1180px) { .hero-meta-right { display: none !important; } }
+          @media (max-width: 768px) { .hero-body { padding: 0 clamp(16px, 5vw, 24px) clamp(56px, 12vw, 80px) !important; } }
         `}</style>
       </section>
 
       {/* ═════════════════════════════════════════════ CAPABILITIES */}
       <section
         id="capabilities"
-        style={{ padding: '120px 48px 132px', borderTop: `1px solid ${HAIR}` }}
+        style={{ padding: 'clamp(64px, 10vw, 120px) clamp(16px, 5vw, 48px) clamp(72px, 12vw, 132px)', borderTop: `1px solid ${HAIR}` }}
         className="section-caps"
       >
         <div style={{ maxWidth: 1440, margin: '0 auto' }}>
-          <motion.div {...revealProps()} style={{ maxWidth: 1040, marginBottom: 44 }}>
-            <Kicker idx="§ 02" label="Capabilities" />
-            <h2
-              style={{
-                fontFamily: '"Bebas Neue", sans-serif',
-                fontSize: 'clamp(2.4rem, 6vw, 4.25rem)',
-                lineHeight: 0.95,
-                letterSpacing: '0.005em',
-                color: INK,
-                maxWidth: '22ch',
-                paddingBottom: '0.12em',
-              }}
-            >
-              Four disciplines.<br />
-              <span style={{ color: INK2 }}>One studio.</span>
-            </h2>
-            <p
-              style={{
-                marginTop: 36,
-                maxWidth: '52ch',
-                color: INK2,
-                fontWeight: 300,
-                fontSize: '1rem',
-                lineHeight: 1.75,
-              }}
-            >
-              Same pipeline on every job — measure, proof, produce, install. Follow a category
-              to Services for full scope, deliverables, and how to quote.
-            </p>
-            <Link
-              to="/services"
-              className="caps-all-services"
-              style={{
-                marginTop: 28,
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 10,
-                fontFamily: '"Barlow Condensed", sans-serif',
-                fontWeight: 500,
-                fontSize: 11,
-                letterSpacing: '0.28em',
-                textTransform: 'uppercase',
-                color: GOLD,
-                textDecoration: 'none',
-                borderBottom: `1px solid ${GOLDS}`,
-                paddingBottom: 4,
-                cursor: 'pointer',
-              }}
-            >
-              All services
-              <Arrow />
-            </Link>
-          </motion.div>
+          <div style={{ marginBottom: 44 }}>
+            <motion.div {...revealProps()}>
+              <Kicker idx="§ 02" label="Capabilities" />
+              <h2
+                style={{
+                  fontFamily: '"Bebas Neue", sans-serif',
+                  fontSize: 'clamp(2.4rem, 6vw, 4.25rem)',
+                  lineHeight: 0.95,
+                  letterSpacing: '0.005em',
+                  color: INK,
+                  maxWidth: '22ch',
+                  paddingBottom: '0.12em',
+                }}
+              >
+                Four disciplines.<br />
+                <span style={{ color: INK2 }}>One studio.</span>
+              </h2>
+              <p
+                style={{
+                  marginTop: 36,
+                  maxWidth: '52ch',
+                  color: INK2,
+                  fontWeight: 300,
+                  fontSize: '1rem',
+                  lineHeight: 1.75,
+                }}
+              >
+                Same pipeline on every job: measure, proof, produce, install. Follow a category
+                to Services for full scope, deliverables, and how to quote.
+              </p>
+              <Link
+                to="/services"
+                className="caps-all-services"
+                style={{
+                  marginTop: 28,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 10,
+                  fontFamily: '"Barlow Condensed", sans-serif',
+                  fontWeight: 500,
+                  fontSize: 11,
+                  letterSpacing: '0.28em',
+                  textTransform: 'uppercase',
+                  color: GOLD,
+                  textDecoration: 'none',
+                  borderBottom: `1px solid ${GOLDS}`,
+                  paddingBottom: 4,
+                  cursor: 'pointer',
+                }}
+              >
+                All services
+                <Arrow />
+              </Link>
+            </motion.div>
+          </div>
 
           <motion.div
             {...revealProps(0.06)}
@@ -543,11 +537,11 @@ export default function Home() {
             outline: 2px solid ${GOLD};
             outline-offset: 6px;
           }
-          @media (max-width: 720px) {
+          @media (max-width: 640px) {
             .caps-quick-grid { grid-template-columns: 1fr !important; }
           }
-          @media (max-width: 900px) {
-            .section-caps { padding: 88px 24px 96px !important; }
+          @media (max-width: 768px) {
+            .section-caps { padding: clamp(48px, 10vw, 88px) clamp(16px, 5vw, 24px) clamp(56px, 10vw, 96px) !important; }
           }
         `}</style>
       </section>
@@ -555,7 +549,7 @@ export default function Home() {
       {/* ═════════════════════════════════════════════ FEATURED WORK */}
       <section
         id="work"
-        style={{ padding: '0 48px 200px' }}
+        style={{ padding: '0 clamp(16px, 5vw, 48px) clamp(80px, 15vw, 200px)' }}
         className="section-work"
       >
         <div style={{ maxWidth: 1440, margin: '0 auto' }}>
@@ -567,8 +561,8 @@ export default function Home() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'flex-end',
-              gap: 48,
-              padding: '200px 0 80px',
+              gap: 'clamp(24px, 4vw, 48px)',
+              padding: 'clamp(56px, 14vw, 200px) 0 clamp(36px, 6vw, 80px)',
               flexWrap: 'wrap',
             }}
           >
@@ -600,11 +594,11 @@ export default function Home() {
                   marginBottom: 32,
                 }}
               >
-                A curated selection of recent commissions — wraps, fleet livery, and signage.
+                A curated selection of recent commissions: wraps, fleet livery, and signage.
                 Hover each file to review the spec sheet.
               </div>
-              <a
-                href="/contact"
+              <Link
+                to="/contact"
                 style={{
                   fontFamily: '"Barlow Condensed", sans-serif',
                   fontWeight: 500,
@@ -618,6 +612,7 @@ export default function Home() {
                   paddingBottom: 4,
                   borderBottom: `1px solid ${HAIR2}`,
                   transition: 'all 0.3s',
+                  textDecoration: 'none',
                 }}
                 onMouseEnter={e => {
                   const el = e.currentTarget as HTMLAnchorElement
@@ -634,7 +629,7 @@ export default function Home() {
                 <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
                   <path d="M1 4h10M8 1l3 3-3 3" stroke="currentColor" strokeWidth="1.2" />
                 </svg>
-              </a>
+              </Link>
             </div>
           </motion.div>
 
@@ -645,14 +640,14 @@ export default function Home() {
         </div>
 
         <style>{`
-          @media (max-width: 900px) { .section-work { padding: 0 24px 120px !important; } }
+          @media (max-width: 768px) { .section-work { padding: 0 clamp(16px, 5vw, 24px) clamp(64px, 13vw, 120px) !important; } }
         `}</style>
       </section>
 
       {/* ═════════════════════════════════════════════ CONTACT */}
       <section
         id="contact"
-        style={{ padding: '200px 48px', borderTop: `1px solid ${HAIR}`, position: 'relative' }}
+        style={{ padding: 'clamp(80px, 14vw, 200px) clamp(16px, 5vw, 48px)', borderTop: `1px solid ${HAIR}`, position: 'relative' }}
         className="section-contact"
       >
         {/* Ambient glow */}
@@ -680,7 +675,7 @@ export default function Home() {
         >
           {/* Left */}
           <motion.div {...revealProps()}>
-            <Kicker idx="§ 04" label="Begin" />
+            <Kicker idx="§ 04" label="Contact" />
             <h2
               style={{
                 fontFamily: '"Bebas Neue", sans-serif',
@@ -690,7 +685,7 @@ export default function Home() {
                 color: INK,
               }}
             >
-              Bring us<br />the <span style={{ color: INK2 }}>brief.</span>
+              Start with<br />a <span style={{ color: INK2 }}>quote.</span>
             </h2>
             <p
               style={{
@@ -702,11 +697,11 @@ export default function Home() {
                 lineHeight: 1.7,
               }}
             >
-              Fleet, storefront, event or full colour change — start with a quote and a measured
-              timeline. A reply lands inside one business day.
+              Fleet wrap, colour change, storefront vinyl, or large-format. Reach out and
+              we'll respond within one business day.
             </p>
-            <div style={{ marginTop: 64, display: 'flex', alignItems: 'center', gap: 36, flexWrap: 'wrap' }}>
-              <ContactCTA />
+            <div style={{ marginTop: 64, display: 'flex', alignItems: 'center', gap: 'clamp(16px, 4vw, 36px)', flexWrap: 'wrap' }}>
+              <PrimaryCTA />
               <a
                 href="tel:7025517315"
                 style={{
@@ -746,7 +741,7 @@ export default function Home() {
                 k: 'Studio',
                 v: (
                   <>
-                    No appointments — call or email and we’ll respond as soon as we can.
+                    No appointments. Call or email and we’ll respond as soon as we can.
                     <br />
                     <span style={{ color: MUTED, fontSize: '0.9rem' }}>Mon – Fri · 8am–6pm</span>
                   </>
@@ -794,7 +789,8 @@ export default function Home() {
         </div>
 
         <style>{`
-          @media (max-width: 900px) { .section-contact { padding: 120px 24px !important; } .contact-inner { grid-template-columns: 1fr !important; gap: 64px !important; } }
+          @media (max-width: 768px) { .section-contact { padding: clamp(56px, 12vw, 120px) clamp(16px, 5vw, 24px) !important; } .contact-inner { grid-template-columns: 1fr !important; gap: 64px !important; } }
+          @media (max-width: 480px) { .contact-inner { gap: 40px !important; } }
         `}</style>
       </section>
 
@@ -859,7 +855,7 @@ function WorkCard({ c }: { c: typeof CASES[0] }) {
         <img
           src={c.imageUrl}
           alt=""
-          loading="eager"
+          loading="lazy"
           decoding="async"
           referrerPolicy="no-referrer"
           style={{
@@ -888,7 +884,7 @@ function WorkCard({ c }: { c: typeof CASES[0] }) {
           position: 'absolute',
           inset: 0,
           background: `radial-gradient(ellipse 50% 55% at 65% 38%, ${c.glow} 0%, transparent 60%)`,
-          opacity: hovered ? 1.6 : 1,
+          opacity: hovered ? 1 : 0.6,
           transition: 'opacity 0.8s',
           pointerEvents: 'none',
         }}
@@ -1029,7 +1025,7 @@ function WorkCard({ c }: { c: typeof CASES[0] }) {
             gap: 16,
           }}
         >
-          <h4
+          <h3
             style={{
               fontFamily: '"Bebas Neue", sans-serif',
               fontSize: c.featured ? 'clamp(1.8rem, 2.8vw, 2.8rem)' : 'clamp(1.3rem, 1.8vw, 1.9rem)',
@@ -1040,7 +1036,7 @@ function WorkCard({ c }: { c: typeof CASES[0] }) {
             }}
           >
             {c.title}
-          </h4>
+          </h3>
           <span
             style={{
               fontFamily: '"Barlow Condensed", sans-serif',
@@ -1067,7 +1063,7 @@ function WorkGrid() {
         style={{
           display: 'grid',
           gridTemplateColumns: '1.45fr 1fr',
-          gridTemplateRows: '360px 360px',
+          gridTemplateRows: 'clamp(220px, 28vw, 360px) clamp(220px, 28vw, 360px)',
           gap: 14,
         }}
         className="work-grid"
@@ -1076,10 +1072,10 @@ function WorkGrid() {
       </div>
 
       <style>{`
-        @media (max-width: 900px) {
+        @media (max-width: 768px) {
           .work-grid {
             grid-template-columns: 1fr !important;
-            grid-template-rows: 320px 260px 260px !important;
+            grid-template-rows: clamp(180px, 44vw, 320px) clamp(150px, 36vw, 260px) clamp(150px, 36vw, 260px) !important;
           }
           .work-grid > *:first-child { grid-row: span 1 !important; }
         }
@@ -1088,7 +1084,7 @@ function WorkGrid() {
   )
 }
 
-function HeroCTA() {
+function PrimaryCTA() {
   const [hovered, setHovered] = useState(false)
   return (
     <Link
@@ -1111,46 +1107,12 @@ function HeroCTA() {
         transition: 'all 0.45s cubic-bezier(0.2,0.8,0.2,1)',
         overflow: 'hidden',
         transform: hovered ? 'translateY(-1px)' : 'none',
-        boxShadow: hovered ? '0 18px 40px -18px rgba(201,169,97,0.4)' : 'none',
+        boxShadow: hovered ? '0 18px 40px -18px rgba(245,196,0,0.35)' : 'none',
         background: hovered ? GOLD : 'transparent',
         textDecoration: 'none',
       }}
     >
-      <span>Begin a project</span>
-      <Arrow />
-    </Link>
-  )
-}
-
-function ContactCTA() {
-  const [hovered, setHovered] = useState(false)
-  return (
-    <Link
-      to="/contact"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        position: 'relative',
-        fontFamily: '"Barlow Condensed", sans-serif',
-        fontWeight: 500,
-        fontSize: 11,
-        letterSpacing: '0.3em',
-        textTransform: 'uppercase',
-        color: hovered ? '#0a0a0a' : INK,
-        padding: '20px 34px',
-        border: `1px solid ${hovered ? GOLD : GOLDS}`,
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: hovered ? 20 : 16,
-        transition: 'all 0.45s cubic-bezier(0.2,0.8,0.2,1)',
-        overflow: 'hidden',
-        transform: hovered ? 'translateY(-1px)' : 'none',
-        boxShadow: hovered ? '0 18px 40px -18px rgba(201,169,97,0.4)' : 'none',
-        background: hovered ? GOLD : 'transparent',
-        textDecoration: 'none',
-      }}
-    >
-      <span>Begin a project</span>
+      <span>Contact Us</span>
       <Arrow />
     </Link>
   )

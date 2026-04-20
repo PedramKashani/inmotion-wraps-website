@@ -10,7 +10,7 @@ export default function Contact() {
   )
 
   return (
-    <main>
+    <main className="bg-brand-bg">
       <PageHero
         label="Get in Touch"
         headline="Let's Build Something."

@@ -10,7 +10,7 @@ interface PageHeroProps {
 export default function PageHero({ label, headline, subtext }: PageHeroProps) {
   return (
     <section
-      className="relative flex items-end overflow-hidden pt-36 pb-16"
+      className="relative flex items-end overflow-hidden pt-16 sm:pt-24 md:pt-32 lg:pt-36 pb-8 sm:pb-10 md:pb-16"
       style={{
         background: `
           radial-gradient(ellipse at 80% 0%, rgba(245,196,0,0.06) 0%, transparent 50%),
@@ -32,7 +32,7 @@ export default function PageHero({ label, headline, subtext }: PageHeroProps) {
       {/* Bottom border */}
       <div className="absolute bottom-0 left-0 right-0 h-px bg-brand-border" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         {/* Label slides in */}
         <motion.p
           initial={{ opacity: 0, y: 12 }}
@@ -46,7 +46,7 @@ export default function PageHero({ label, headline, subtext }: PageHeroProps) {
         {/* Headline — word-by-word mask reveal */}
         <h1
           className="font-heading font-bold text-brand-text leading-none mb-5"
-          style={{ fontSize: 'clamp(2.5rem, 7vw, 5rem)' }}
+          style={{ fontSize: 'clamp(1.85rem, 7vw, 5rem)' }}
         >
           <SplitWords text={headline} delay={0.1} stagger={0.06} />
         </h1>

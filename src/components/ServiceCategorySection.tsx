@@ -17,9 +17,9 @@ const externalCategoryImages: Record<string, string> = {
   "signs-decals":
     "https://images.unsplash.com/photo-1740955803167-be35f9bfddd2?auto=format&fit=crop&w=1600&q=80",
   /** On-brand booth / large-format mock — asset in `/public` */
-  "banners-trade-show": "/services-banners-trade-show.png",
+  "banners-trade-show": "/services-banners-trade-show.webp",
   /** On-brand marketing print & stationery mock — asset in `/public` */
-  "marketing-print": "/services-marketing-print.png",
+  "marketing-print": "/services-marketing-print.webp",
 };
 
 function CategoryVisualPanel({
@@ -32,7 +32,7 @@ function CategoryVisualPanel({
   isInView: boolean;
 }) {
   return (
-    <div className="relative min-h-[280px] lg:min-h-[400px] rounded-xl overflow-hidden border border-brand-border bg-brand-surface">
+    <div className="relative min-h-[220px] sm:min-h-[260px] lg:min-h-[400px] rounded-xl overflow-hidden border border-brand-border bg-brand-surface">
       <div
         aria-hidden="true"
         className="absolute inset-0"
@@ -139,8 +139,8 @@ export default function ServiceCategorySection({
       id={id}
       className={`scroll-mt-24 border-b border-brand-border ${index % 2 === 0 ? "bg-brand-bg" : "bg-brand-surface"}`}
     >
-      <div className="max-w-7xl mx-auto px-6 py-20 lg:py-28">
-        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-14 xl:gap-x-20 gap-12 lg:gap-y-0 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-16 lg:py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-14 xl:gap-x-20 gap-8 md:gap-12 lg:gap-y-0 items-center">
           {/* Visual panel */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -190,7 +190,7 @@ export default function ServiceCategorySection({
 
             {/* Staggered bullet list */}
             <motion.ul
-              className="space-y-3 mb-9"
+              className="space-y-3 mb-6 md:mb-9"
               variants={bulletVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
@@ -219,7 +219,7 @@ export default function ServiceCategorySection({
             >
               <Link
                 to={ctaLink}
-                className="inline-flex self-start bg-brand-accent text-brand-bg font-semibold text-xs px-8 py-3.5 uppercase tracking-widest rounded cursor-pointer hover:brightness-110 transition-all duration-200 mb-2"
+                className="inline-flex w-full sm:w-auto justify-center sm:justify-start self-start bg-brand-accent text-brand-bg font-semibold text-xs px-6 sm:px-8 py-3.5 uppercase tracking-widest rounded cursor-pointer hover:brightness-110 transition-all duration-200 mb-2"
               >
                 {ctaLabel}
               </Link>
@@ -244,7 +244,7 @@ export default function ServiceCategorySection({
                   </svg>
                 </span>
               </summary>
-              <div className="border-t border-brand-border px-4 pb-4 pt-1 max-h-[min(60vh,28rem)] overflow-y-auto overscroll-contain">
+              <div className="border-t border-brand-border px-4 pb-4 pt-1 max-h-[min(50vh,22rem)] md:max-h-[min(60vh,28rem)] overflow-y-auto overscroll-contain">
                 <ul className="divide-y divide-brand-border/80">
                   {items.map((item) => (
                     <li key={item.name} className="py-3.5 first:pt-3">

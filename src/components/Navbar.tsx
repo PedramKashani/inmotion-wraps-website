@@ -20,6 +20,17 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   const linkStyle: React.CSSProperties = {
     fontFamily: '"Barlow Condensed", sans-serif',
     fontWeight: 400,
@@ -81,23 +92,36 @@ export default function Navbar() {
 
       {/* Center — nav links */}
       <nav
+        aria-label="Main navigation"
         className="nav-links-desktop"
         style={{ display: 'flex', gap: 44, justifySelf: 'center' }}
       >
         {[
-          { to: '/#work', label: 'Work' },
-          { to: '/services', label: 'Services' },
-          { to: '/contact', label: 'Contact' },
-        ].map(({ to, label }) => (
-          <a
-            key={label}
-            href={to}
-            style={linkStyle}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = INK }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = INK2 }}
-          >
-            {label}
-          </a>
+          { to: '/#work', label: 'Work', hash: true },
+          { to: '/services', label: 'Services', hash: false },
+          { to: '/contact', label: 'Contact', hash: false },
+        ].map(({ to, label, hash }) => (
+          hash ? (
+            <a
+              key={label}
+              href={to}
+              style={linkStyle}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = INK }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = INK2 }}
+            >
+              {label}
+            </a>
+          ) : (
+            <Link
+              key={label}
+              to={to}
+              style={linkStyle}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = INK }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = INK2 }}
+            >
+              {label}
+            </Link>
+          )
         ))}
       </nav>
 
@@ -154,94 +178,170 @@ export default function Navbar() {
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label={menuOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={menuOpen}
-        style={{ justifySelf: 'end', background: 'none', border: 'none', cursor: 'pointer', color: INK, padding: '6px' }}
+        style={{
+          justifySelf: 'end',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          color: INK,
+          padding: 8,
+          position: 'relative',
+          zIndex: 101,
+        }}
       >
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-          {menuOpen ? (
-            <><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></>
-          ) : (
-            <><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="18" x2="21" y2="18" /></>
-          )}
-        </svg>
+        <div style={{ position: 'relative', width: 22, height: 14 }}>
+          <motion.span
+            animate={menuOpen
+              ? { top: 6, rotate: 45, width: '100%' }
+              : { top: 0, rotate: 0, width: '100%' }
+            }
+            transition={{ duration: 0.35, ease: [0.76, 0, 0.24, 1] }}
+            style={{
+              position: 'absolute', left: 0, height: 1.5,
+              background: 'currentColor', borderRadius: 2,
+            }}
+          />
+          <motion.span
+            animate={menuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+            transition={{ duration: 0.2 }}
+            style={{
+              position: 'absolute', left: 0, right: 0, height: 1.5,
+              background: 'currentColor', borderRadius: 2, top: 6,
+              transformOrigin: 'left center',
+            }}
+          />
+          <motion.span
+            animate={menuOpen
+              ? { bottom: 8, rotate: -45, width: '100%' }
+              : { bottom: 0, rotate: 0, width: '100%' }
+            }
+            transition={{ duration: 0.35, ease: [0.76, 0, 0.24, 1] }}
+            style={{
+              position: 'absolute', left: 0, height: 1.5,
+              background: 'currentColor', borderRadius: 2, bottom: 0,
+            }}
+          />
+        </div>
       </button>
 
-      {/* Mobile menu */}
+      {/* Mobile full-screen overlay */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
             style={{
-              position: 'absolute',
-              top: '100%',
-              right: 0,
-              width: 'min(320px, 100vw)',
-              overflow: 'hidden',
-              boxShadow: '-12px 24px 48px rgba(0,0,0,0.35)',
+              position: 'fixed',
+              inset: 0,
+              zIndex: 99,
+              backgroundColor: '#080808',
+              display: 'flex',
+              flexDirection: 'column',
+              padding: 'clamp(96px, 18vh, 136px) clamp(28px, 8vw, 48px) clamp(40px, 8vw, 52px)',
             }}
           >
+            {/* Subtle grid texture */}
             <div
+              aria-hidden
               style={{
-                backgroundColor: 'rgba(10,10,10,0.96)',
-                backdropFilter: 'blur(16px)',
-                borderBottom: `1px solid ${HAIR2}`,
-                borderLeft: `1px solid ${HAIR2}`,
+                position: 'absolute', inset: 0, opacity: 0.025, pointerEvents: 'none',
+                backgroundImage: 'linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)',
+                backgroundSize: '64px 64px',
               }}
-            >
-            <nav
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-end',
-                padding: '24px',
-                gap: 20,
-                textAlign: 'right',
-              }}
-            >
+            />
+
+            {/* Nav links */}
+            <nav aria-label="Mobile navigation" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
               {[
-                { to: '/#work', label: 'Work' },
-                { to: '/services', label: 'Services' },
-                { to: '/contact', label: 'Contact' },
-              ].map(({ to, label }) => (
-                <a
-                  key={label}
-                  href={to}
-                  onClick={() => setMenuOpen(false)}
-                  style={{
-                    fontFamily: '"Barlow Condensed", sans-serif',
-                    fontWeight: 400,
-                    fontSize: 13,
-                    letterSpacing: '0.28em',
-                    textTransform: 'uppercase',
-                    color: INK2,
-                  }}
-                >
-                  {label}
-                </a>
-              ))}
+                { to: '/#work', label: 'Work', num: '01', hash: true },
+                { to: '/services', label: 'Services', num: '02', hash: false },
+                { to: '/contact', label: 'Contact', num: '03', hash: false },
+              ].map(({ to, label, num, hash }, i) => {
+                const inner = (
+                  <motion.div
+                    key={label}
+                    initial={{ opacity: 0, y: 32 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -16 }}
+                    transition={{ duration: 0.45, delay: 0.12 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ borderTop: `1px solid ${HAIR2}` }}
+                    className="mobile-nav-item"
+                  >
+                    <span style={{
+                      display: 'flex', alignItems: 'baseline', gap: 16,
+                      padding: '18px 0',
+                    }}>
+                      <span style={{
+                        fontFamily: '"Barlow Condensed", sans-serif',
+                        fontSize: 10, letterSpacing: '0.3em',
+                        textTransform: 'uppercase', color: GOLD,
+                        flexShrink: 0,
+                      }}>
+                        {num}
+                      </span>
+                      <span style={{
+                        fontFamily: '"Bebas Neue", sans-serif',
+                        fontSize: 'clamp(2.6rem, 11vw, 3.8rem)',
+                        letterSpacing: '0.02em', lineHeight: 1,
+                        color: INK,
+                        transition: 'color 0.2s',
+                      }}
+                        className="mobile-nav-label"
+                      >
+                        {label}
+                      </span>
+                    </span>
+                  </motion.div>
+                )
+
+                return hash ? (
+                  <a key={label} href={to} onClick={() => setMenuOpen(false)} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {inner}
+                  </a>
+                ) : (
+                  <Link key={label} to={to} onClick={() => setMenuOpen(false)} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {inner}
+                  </Link>
+                )
+              })}
+              <div style={{ borderTop: `1px solid ${HAIR2}` }} />
+            </nav>
+
+            {/* Bottom — phone + CTA */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4, delay: 0.38, ease: 'easeOut' }}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, paddingTop: 28 }}
+            >
+              <a
+                href="tel:7025517315"
+                style={{
+                  fontFamily: '"Barlow Condensed", sans-serif',
+                  fontSize: 13, letterSpacing: '0.12em',
+                  color: MUTED, textDecoration: 'none',
+                }}
+              >
+                +1 (702) 551 7315
+              </a>
               <Link
                 to="/contact"
                 onClick={() => setMenuOpen(false)}
                 style={{
                   fontFamily: '"Barlow Condensed", sans-serif',
-                  fontWeight: 500,
-                  fontSize: 11,
-                  letterSpacing: '0.26em',
-                  textTransform: 'uppercase',
-                  color: INK,
-                  padding: '14px 20px',
+                  fontWeight: 500, fontSize: 11,
+                  letterSpacing: '0.26em', textTransform: 'uppercase',
+                  color: INK, padding: '14px 24px',
                   border: `1px solid ${GOLD}`,
-                  textAlign: 'center',
-                  alignSelf: 'flex-end',
-                  marginTop: 4,
+                  textDecoration: 'none', whiteSpace: 'nowrap',
                 }}
               >
                 Request a Quote
               </Link>
-            </nav>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -269,6 +369,7 @@ export default function Navbar() {
             justify-self: start !important;
           }
         }
+        .mobile-nav-item:hover .mobile-nav-label { color: ${GOLD}; }
       `}</style>
     </header>
   )
