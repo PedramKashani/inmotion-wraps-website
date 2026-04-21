@@ -700,95 +700,59 @@ export default function Home() {
               Fleet wrap, colour change, storefront vinyl, or large-format. Reach out and
               we'll respond within one business day.
             </p>
-            <div style={{ marginTop: 64, display: 'flex', alignItems: 'center', gap: 'clamp(16px, 4vw, 36px)', flexWrap: 'wrap' }}>
+            <div style={{ marginTop: 64 }}>
               <PrimaryCTA />
-              <a
-                href="tel:7025517315"
-                style={{
-                  fontFamily: '"Barlow Condensed", sans-serif',
-                  fontWeight: 500,
-                  fontSize: 11,
-                  letterSpacing: '0.3em',
-                  textTransform: 'uppercase',
-                  color: INK2,
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 12,
-                  paddingBottom: 4,
-                  borderBottom: '1px solid transparent',
-                  transition: 'all 0.3s',
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLAnchorElement
-                  el.style.color = GOLD
-                  el.style.borderColor = GOLD
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLAnchorElement
-                  el.style.color = INK2
-                  el.style.borderColor = 'transparent'
-                }}
-              >
-                or call the studio
-              </a>
             </div>
           </motion.div>
 
-          {/* Right — meta */}
-          <motion.div {...revealProps(0.1)} style={{ display: 'grid', gap: 40, paddingTop: 12 }}>
-            {[
-              {
-                k: 'Studio',
-                v: (
-                  <>
-                    No appointments. Call or email and we’ll respond as soon as we can.
-                    <br />
-                    <span style={{ color: MUTED, fontSize: '0.9rem' }}>Mon – Fri · 8am–6pm</span>
-                  </>
-                ),
-              },
-              { k: 'Line', v: <a href="tel:7025517315" style={{ color: GOLD, fontFamily: '"Barlow Condensed", sans-serif', letterSpacing: '0.06em', fontSize: '1.15rem' }}>+1 (702) 551 7315</a> },
-              {
-                k: 'Mail',
-                v: (
-                  <a href={`mailto:${CONTACT_EMAIL}`} style={{ color: INK, fontWeight: 300 }}>
-                    {CONTACT_EMAIL}
-                  </a>
-                ),
-              },
-              { k: 'Service', v: 'Regional · on-site install available' },
-            ].map(({ k, v }) => (
-              <div
-                key={k}
-                style={{
-                  borderTop: `1px solid ${HAIR}`,
-                  paddingTop: 20,
-                  display: 'grid',
-                  gridTemplateColumns: '90px 1fr',
-                  gap: 24,
-                  alignItems: 'baseline',
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: '"Barlow Condensed", sans-serif',
-                    fontSize: 10,
-                    letterSpacing: '0.3em',
-                    textTransform: 'uppercase',
-                    color: MUTED,
-                  }}
-                >
-                  {k}
-                </div>
-                <div style={{ color: INK, fontWeight: 300, fontSize: '1.0625rem', letterSpacing: '0.01em' }}>
-                  {v}
-                </div>
-              </div>
-            ))}
+          {/* Right — contact details */}
+          <motion.div {...revealProps(0.1)} style={{ paddingTop: 12 }}>
+
+            {/* Phone — primary, most prominent element */}
+            <a
+              href="tel:7025517315"
+              className="contact-phone-link"
+              style={{
+                display: 'block',
+                fontFamily: '"Barlow Condensed", sans-serif',
+                fontWeight: 600,
+                fontSize: 'clamp(1.9rem, 3.6vw, 2.75rem)',
+                letterSpacing: '0.05em',
+                color: GOLD,
+                textDecoration: 'none',
+                lineHeight: 1,
+                marginBottom: 16,
+                transition: 'opacity 0.2s',
+              }}
+            >
+              +1 (702) 551 7315
+            </a>
+
+            {/* Email — secondary */}
+            <a
+              href={`mailto:${CONTACT_EMAIL}`}
+              className="contact-email-link"
+              style={{
+                display: 'block',
+                fontFamily: '"DM Sans", system-ui, sans-serif',
+                fontWeight: 300,
+                fontSize: '0.9375rem',
+                color: INK2,
+                textDecoration: 'none',
+                letterSpacing: '0.01em',
+                marginBottom: 0,
+                transition: 'color 0.2s',
+              }}
+            >
+              {CONTACT_EMAIL}
+            </a>
+
           </motion.div>
         </div>
 
         <style>{`
+          .contact-phone-link:hover { opacity: 0.75; }
+          .contact-email-link:hover { color: ${INK}; }
           @media (max-width: 768px) { .section-contact { padding: clamp(56px, 12vw, 120px) clamp(16px, 5vw, 24px) !important; } .contact-inner { grid-template-columns: 1fr !important; gap: 64px !important; } }
           @media (max-width: 480px) { .contact-inner { gap: 40px !important; } }
         `}</style>

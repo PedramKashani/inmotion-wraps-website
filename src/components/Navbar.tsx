@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect, useRef } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import logoLightSrc from '../assets/logo-light.webp'
 
@@ -9,27 +9,72 @@ const INK = '#EDEAE4'
 const INK2 = '#B8B4AC'
 const MUTED = '#6E6A63'
 
+const NAV_LINKS = [
+  { to: '/#work',    label: 'Work',     blurb: 'Projects & installs',  num: '01', hash: true  },
+  { to: '/services', label: 'Services', blurb: 'Wraps, print & more',  num: '02', hash: false },
+  { to: '/contact',  label: 'Contact',  blurb: '',                     num: '03', hash: false },
+]
+
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const reduceMotion = useReducedMotion()
+  const [scrolled, setScrolled]   = useState(false)
+  const reduceMotion  = useReducedMotion()
+  const location      = useLocation()
+  const hamburgerRef  = useRef<HTMLButtonElement>(null)
+  const prevOpenRef   = useRef(false)
 
+  // Scroll tracking
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30)
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // Close menu on desktop resize
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    const onResize = () => { if (window.innerWidth > 900) setMenuOpen(false) }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  // iOS-friendly scroll lock: cleanup must restore scroll using the Y captured
+  // when the menu opened. A separate "else" branch fails because React runs the
+  // previous effect's cleanup *before* the next effect body — cleanup clears
+  // body.style.top, so reading it in else never works.
+  useEffect(() => {
+    if (!menuOpen) return
+    const y = window.scrollY
+    document.body.style.setProperty('overflow', 'hidden')
+    document.body.style.setProperty('position', 'fixed')
+    document.body.style.setProperty('top', `-${y}px`)
+    document.body.style.setProperty('width', '100%')
+    return () => {
+      document.body.style.removeProperty('overflow')
+      document.body.style.removeProperty('position')
+      document.body.style.removeProperty('top')
+      document.body.style.removeProperty('width')
+      window.scrollTo(0, y)
+    }
   }, [menuOpen])
 
+  // Close menu on any React Router route change (back/forward, programmatic nav).
+  useEffect(() => { setMenuOpen(false) }, [location.pathname])
+
+  // Restore focus to the hamburger when menu closes so keyboard users don't lose context.
   useEffect(() => {
+    if (prevOpenRef.current && !menuOpen) hamburgerRef.current?.focus()
+    prevOpenRef.current = menuOpen
+  }, [menuOpen])
+
+  // Escape key closes menu
+  useEffect(() => {
+    if (!menuOpen) return
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false) }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [])
+  }, [menuOpen])
+
+  const close = () => setMenuOpen(false)
 
   const linkStyle: React.CSSProperties = {
     fontFamily: '"Barlow Condensed", sans-serif',
@@ -38,339 +83,339 @@ export default function Navbar() {
     letterSpacing: '0.28em',
     textTransform: 'uppercase',
     color: INK2,
-    position: 'relative',
     paddingBottom: 3,
     transition: 'color 0.3s',
   }
 
+  // Navbar height mirrors the CSS transition so the overlay spacer tracks it.
+  const navbarHeight = scrolled ? 60 : 80
+
   return (
-    <header
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        display: 'grid',
-        gridTemplateColumns: '1fr auto 1fr',
-        alignItems: 'center',
-        padding: scrolled ? '16px 48px' : '26px 48px',
-        transition: 'all 0.4s cubic-bezier(0.2,0.8,0.2,1)',
-        backgroundColor: scrolled ? 'rgba(10,10,10,0.82)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(16px)' : undefined,
-        WebkitBackdropFilter: scrolled ? 'blur(16px)' : undefined,
-        borderBottom: scrolled ? `1px solid ${HAIR2}` : '1px solid transparent',
-      }}
-    >
-      {/* Left — logo (desktop col 1; mobile centered in row) */}
-      <Link
-        to="/"
-        className="nav-logo-link"
-        style={{ display: 'flex', alignItems: 'center', gap: 10, justifySelf: 'start' }}
-      >
-        <motion.span
-          style={{ display: 'inline-flex', lineHeight: 0 }}
-          initial={false}
-          animate={
-            reduceMotion
-              ? false
-              : { scale: [1, 1.04, 1] }
-          }
-          transition={{
-            duration: 2.75,
-            repeat: reduceMotion ? 0 : Infinity,
-            ease: 'easeInOut',
-          }}
-          whileHover={
-            reduceMotion ? undefined : { scale: 1.08, transition: { duration: 0.2, ease: 'easeOut' } }
-          }
-          whileTap={reduceMotion ? undefined : { scale: 0.97 }}
-        >
-          <img src={logoLightSrc} alt="InMotion Wraps & Print" style={{ height: 28, width: 'auto', display: 'block' }} />
-        </motion.span>
-      </Link>
-
-      {/* Center — nav links */}
-      <nav
-        aria-label="Main navigation"
-        className="nav-links-desktop"
-        style={{ display: 'flex', gap: 44, justifySelf: 'center' }}
-      >
-        {[
-          { to: '/#work', label: 'Work', hash: true },
-          { to: '/services', label: 'Services', hash: false },
-          { to: '/contact', label: 'Contact', hash: false },
-        ].map(({ to, label, hash }) => (
-          hash ? (
-            <a
-              key={label}
-              href={to}
-              style={linkStyle}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = INK }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = INK2 }}
-            >
-              {label}
-            </a>
-          ) : (
-            <Link
-              key={label}
-              to={to}
-              style={linkStyle}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = INK }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = INK2 }}
-            >
-              {label}
-            </Link>
-          )
-        ))}
-      </nav>
-
-      {/* Right — phone + CTA */}
-      <div
-        className="nav-right-desktop"
-        style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: 28 }}
-      >
-        <a
-          href="tel:7025517315"
-          style={{
-            fontFamily: '"DM Sans", system-ui, sans-serif',
-            fontSize: 12,
-            color: MUTED,
-            letterSpacing: '0.04em',
-            fontWeight: 400,
-          }}
-        >
-          +1 (702) 551 7315
-        </a>
-        <Link
-          to="/contact"
-          style={{
-            fontFamily: '"Barlow Condensed", sans-serif',
-            fontWeight: 500,
-            fontSize: 11,
-            letterSpacing: '0.26em',
-            textTransform: 'uppercase',
-            color: INK,
-            padding: '12px 20px',
-            border: `1px solid ${HAIR2}`,
-            borderRadius: 1,
-            transition: 'all 0.3s',
-            whiteSpace: 'nowrap',
-          }}
-          onMouseEnter={e => {
-            const el = e.currentTarget as HTMLElement
-            el.style.borderColor = GOLD
-            el.style.color = GOLD
-          }}
-          onMouseLeave={e => {
-            const el = e.currentTarget as HTMLElement
-            el.style.borderColor = HAIR2
-            el.style.color = INK
-          }}
-        >
-          Request a Quote
-        </Link>
-      </div>
-
-      {/* Mobile hamburger */}
-      <button
-        className="nav-hamburger"
-        onClick={() => setMenuOpen(!menuOpen)}
-        aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-        aria-expanded={menuOpen}
+    <>
+      {/* ─── Navbar bar ───────────────────────────────────────────────────────
+          IMPORTANT: backdropFilter is disabled when the menu is open.
+          backdrop-filter creates a new CSS containing block, which would
+          confine any position:fixed child to the header's bounding box
+          instead of the full viewport — the root cause of the overlay bug.
+      ──────────────────────────────────────────────────────────────────────── */}
+      <header
+        className="nav-header fixed top-0 left-0 right-0 z-[10100] grid w-full grid-cols-[1fr_auto_1fr] items-center transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)]"
         style={{
-          justifySelf: 'end',
-          background: 'none',
-          border: 'none',
-          cursor: 'pointer',
-          color: INK,
-          padding: 8,
-          position: 'relative',
-          zIndex: 101,
+          padding: scrolled ? '16px 48px' : '26px 48px',
+          backgroundColor: menuOpen
+            ? '#030303'
+            : scrolled
+              ? 'rgba(10,10,10,0.82)'
+              : 'transparent',
+          backdropFilter:    !menuOpen && scrolled ? 'blur(16px)' : undefined,
+          WebkitBackdropFilter: !menuOpen && scrolled ? 'blur(16px)' : undefined,
+          borderBottom: menuOpen || scrolled ? `1px solid ${HAIR2}` : '1px solid transparent',
         }}
       >
-        <div style={{ position: 'relative', width: 22, height: 14 }}>
+        {/* Logo */}
+        <Link
+          to="/"
+          className="nav-logo-link"
+          style={{ display: 'flex', alignItems: 'center', gap: 10, justifySelf: 'start' }}
+          onClick={close}
+        >
           <motion.span
-            animate={menuOpen
-              ? { top: 6, rotate: 45, width: '100%' }
-              : { top: 0, rotate: 0, width: '100%' }
-            }
-            transition={{ duration: 0.35, ease: [0.76, 0, 0.24, 1] }}
-            style={{
-              position: 'absolute', left: 0, height: 1.5,
-              background: 'currentColor', borderRadius: 2,
-            }}
-          />
-          <motion.span
-            animate={menuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-            transition={{ duration: 0.2 }}
-            style={{
-              position: 'absolute', left: 0, right: 0, height: 1.5,
-              background: 'currentColor', borderRadius: 2, top: 6,
-              transformOrigin: 'left center',
-            }}
-          />
-          <motion.span
-            animate={menuOpen
-              ? { bottom: 8, rotate: -45, width: '100%' }
-              : { bottom: 0, rotate: 0, width: '100%' }
-            }
-            transition={{ duration: 0.35, ease: [0.76, 0, 0.24, 1] }}
-            style={{
-              position: 'absolute', left: 0, height: 1.5,
-              background: 'currentColor', borderRadius: 2, bottom: 0,
-            }}
-          />
-        </div>
-      </button>
+            style={{ display: 'inline-flex', lineHeight: 0 }}
+            initial={false}
+            animate={reduceMotion ? false : { scale: [1, 1.04, 1] }}
+            transition={{ duration: 2.75, repeat: reduceMotion ? 0 : Infinity, ease: 'easeInOut' }}
+            whileHover={reduceMotion ? undefined : { scale: 1.08, transition: { duration: 0.2, ease: 'easeOut' } }}
+            whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+          >
+            <img
+              src={logoLightSrc}
+              alt="InMotion Wraps & Print"
+              style={{ height: 28, width: 'auto', display: 'block' }}
+            />
+          </motion.span>
+        </Link>
 
-      {/* Mobile full-screen overlay */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ duration: 0.55, ease: [0.76, 0, 0.24, 1] }}
+        {/* Desktop nav links */}
+        <nav
+          aria-label="Main navigation"
+          className="nav-links-desktop"
+          style={{ display: 'flex', gap: 44, justifySelf: 'center' }}
+        >
+          {NAV_LINKS.map(({ to, label, hash }) =>
+            hash ? (
+              <a
+                key={label}
+                href={to}
+                style={linkStyle}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = INK }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = INK2 }}
+              >
+                {label}
+              </a>
+            ) : (
+              <Link
+                key={label}
+                to={to}
+                style={linkStyle}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = INK }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = INK2 }}
+              >
+                {label}
+              </Link>
+            )
+          )}
+        </nav>
+
+        {/* Desktop right: phone + CTA */}
+        <div
+          className="nav-right-desktop"
+          style={{ justifySelf: 'end', display: 'flex', alignItems: 'center', gap: 28 }}
+        >
+          <a
+            href="tel:7025517315"
             style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 99,
-              backgroundColor: '#080808',
-              display: 'flex',
-              flexDirection: 'column',
-              padding: 'clamp(96px, 18vh, 136px) clamp(28px, 8vw, 48px) clamp(40px, 8vw, 52px)',
+              fontFamily: '"DM Sans", system-ui, sans-serif',
+              fontSize: 12, color: MUTED, letterSpacing: '0.04em', fontWeight: 400,
             }}
           >
-            {/* Subtle grid texture */}
+            +1 (702) 551 7315
+          </a>
+          <Link
+            to="/contact"
+            style={{
+              fontFamily: '"Barlow Condensed", sans-serif',
+              fontWeight: 500, fontSize: 11, letterSpacing: '0.26em',
+              textTransform: 'uppercase', color: INK,
+              padding: '12px 20px', border: `1px solid ${HAIR2}`,
+              borderRadius: 1, transition: 'all 0.3s', whiteSpace: 'nowrap',
+            }}
+            onMouseEnter={e => {
+              const el = e.currentTarget as HTMLElement
+              el.style.borderColor = GOLD; el.style.color = GOLD
+            }}
+            onMouseLeave={e => {
+              const el = e.currentTarget as HTMLElement
+              el.style.borderColor = HAIR2; el.style.color = INK
+            }}
+          >
+            Request a Quote
+          </Link>
+        </div>
+
+        {/* Hamburger — 44×44 min touch target */}
+        <button
+          ref={hamburgerRef}
+          type="button"
+          className={`nav-hamburger justify-self-end cursor-pointer rounded-md border border-transparent transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/60 ${
+            menuOpen
+              ? 'border-brand-border/80 bg-black/75 text-brand-accent'
+              : 'text-brand-text hover:border-brand-border/60 hover:bg-white/[0.04]'
+          }`}
+          style={{
+            minWidth: 44, minHeight: 44,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 10,
+          }}
+          onClick={() => setMenuOpen(v => !v)}
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav-sheet"
+        >
+          <div style={{ position: 'relative', width: 22, height: 14 }}>
+            <motion.span
+              animate={menuOpen ? { top: 6, rotate: 45 } : { top: 0, rotate: 0 }}
+              transition={{ duration: 0.35, ease: [0.76, 0, 0.24, 1] }}
+              style={{ position: 'absolute', left: 0, right: 0, height: 1.5, background: 'currentColor', borderRadius: 2 }}
+            />
+            <motion.span
+              animate={menuOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+              transition={{ duration: 0.2 }}
+              style={{ position: 'absolute', left: 0, right: 0, height: 1.5, background: 'currentColor', borderRadius: 2, top: 6, transformOrigin: 'left center' }}
+            />
+            <motion.span
+              animate={menuOpen ? { bottom: 8, rotate: -45 } : { bottom: 0, rotate: 0 }}
+              transition={{ duration: 0.35, ease: [0.76, 0, 0.24, 1] }}
+              style={{ position: 'absolute', left: 0, right: 0, height: 1.5, background: 'currentColor', borderRadius: 2, bottom: 0 }}
+            />
+          </div>
+        </button>
+
+        <style>{`
+          @media (max-width: 900px) {
+            .nav-header        { padding-left: 20px !important; padding-right: 20px !important; }
+            .nav-links-desktop { display: none !important; }
+            .nav-right-desktop { display: none !important; }
+            .nav-logo-link     { grid-column: 2; grid-row: 1; justify-self: center !important; }
+            .nav-hamburger     { grid-column: 3; grid-row: 1; display: flex !important; }
+          }
+          @media (min-width: 901px) {
+            .nav-hamburger     { display: none !important; }
+            .nav-logo-link     { grid-column: 1; grid-row: 1; justify-self: start !important; }
+            .nav-mobile-sheet  { display: none !important; }
+          }
+        `}</style>
+      </header>
+
+      {/* ─── Mobile full-screen sheet ──────────────────────────────────────────
+          Rendered as a SIBLING of <header>, not a child. This is intentional:
+          any element with backdrop-filter becomes the CSS containing block for
+          position:fixed descendants, so the overlay must live outside the header
+          to correctly cover the full viewport (inset-0 / 100dvh).
+
+          z-[10090] sits below the header (z-[10100]) so the navbar bar and its
+          hamburger button remain visible and tappable above the sheet.
+      ──────────────────────────────────────────────────────────────────────── */}
+      {/* mode="wait" ensures the exit animation fully completes before a new
+          enter starts, preventing double-render flicker on rapid taps. */}
+      <AnimatePresence mode="wait">
+        {menuOpen && (
+          <motion.div
+            id="mobile-nav-sheet"
+            key="mobile-menu-sheet"
+            className="nav-mobile-sheet fixed inset-0 z-[10090] flex flex-col"
+            style={{ height: '100dvh', backgroundColor: '#030303' }}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site navigation"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            onClick={close}
+          >
+            {/* Spacer — mirrors navbar height so no content hides behind it.
+                Shares the same transition timing as the header.
+                Tapping this area (above the content panel) also closes the menu. */}
             <div
-              aria-hidden
-              style={{
-                position: 'absolute', inset: 0, opacity: 0.025, pointerEvents: 'none',
-                backgroundImage: 'linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)',
-                backgroundSize: '64px 64px',
-              }}
+              className="shrink-0 transition-all duration-[400ms] ease-[cubic-bezier(0.2,0.8,0.2,1)]"
+              style={{ height: navbarHeight, borderBottom: `1px solid ${HAIR2}` }}
             />
 
-            {/* Nav links */}
-            <nav aria-label="Mobile navigation" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-              {[
-                { to: '/#work', label: 'Work', num: '01', hash: true },
-                { to: '/services', label: 'Services', num: '02', hash: false },
-                { to: '/contact', label: 'Contact', num: '03', hash: false },
-              ].map(({ to, label, num, hash }, i) => {
+            {/* Content area — stopPropagation prevents taps here from bubbling
+                to the sheet's onClick={close} handler above. */}
+            <div className="flex flex-1 flex-col min-h-0 overflow-hidden" onClick={e => e.stopPropagation()}>
+
+            {/* Nav links — vertically centered, scrollable on short viewports */}
+            <nav
+              aria-label="Mobile navigation"
+              className="flex flex-1 flex-col justify-center overflow-y-auto px-5 py-6 gap-0.5"
+            >
+              {NAV_LINKS.map(({ to, label, blurb, num, hash }, i) => {
                 const inner = (
-                  <motion.div
-                    key={label}
-                    initial={{ opacity: 0, y: 32 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -16 }}
-                    transition={{ duration: 0.45, delay: 0.12 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                    style={{ borderTop: `1px solid ${HAIR2}` }}
-                    className="mobile-nav-item"
-                  >
-                    <span style={{
-                      display: 'flex', alignItems: 'baseline', gap: 16,
-                      padding: '18px 0',
-                    }}>
+                  <>
+                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
                       <span style={{
                         fontFamily: '"Barlow Condensed", sans-serif',
-                        fontSize: 10, letterSpacing: '0.3em',
-                        textTransform: 'uppercase', color: GOLD,
+                        fontSize: 10, fontWeight: 500, letterSpacing: '0.24em',
+                        color: GOLD, textTransform: 'uppercase',
                         flexShrink: 0,
                       }}>
                         {num}
                       </span>
                       <span style={{
-                        fontFamily: '"Bebas Neue", sans-serif',
-                        fontSize: 'clamp(2.6rem, 11vw, 3.8rem)',
-                        letterSpacing: '0.02em', lineHeight: 1,
-                        color: INK,
-                        transition: 'color 0.2s',
-                      }}
-                        className="mobile-nav-label"
-                      >
+                        fontFamily: '"Barlow Condensed", sans-serif',
+                        // clamp keeps labels readable across 320px–900px viewports
+                        fontSize: 'clamp(28px, 8.5vw, 42px)',
+                        fontWeight: 600, letterSpacing: '0.06em',
+                        color: INK, textTransform: 'uppercase', lineHeight: 1,
+                      }}>
                         {label}
                       </span>
-                    </span>
+                    </div>
+                    {blurb && (
+                      <span style={{
+                        fontFamily: '"DM Sans", system-ui, sans-serif',
+                        fontSize: 13, color: MUTED, lineHeight: 1.4,
+                        display: 'block', marginTop: 5, paddingLeft: 22,
+                      }}>
+                        {blurb}
+                      </span>
+                    )}
+                  </>
+                )
+
+                // 72px min height = well above the 44px WCAG touch-target floor
+                const itemStyle: React.CSSProperties = {
+                  minHeight: 72,
+                  display: 'flex', flexDirection: 'column', justifyContent: 'center',
+                  padding: '14px 16px', borderRadius: 10,
+                  textDecoration: 'none', color: 'inherit', outline: 'none',
+                  transition: 'background-color 0.18s',
+                }
+
+                const hoverOn  = (e: React.MouseEvent) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(255,255,255,0.04)' }
+                const hoverOff = (e: React.MouseEvent) => { (e.currentTarget as HTMLElement).style.backgroundColor = 'transparent' }
+
+                return (
+                  <motion.div
+                    key={label}
+                    initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: -14 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.07 + 0.12, duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    {hash ? (
+                      <a href={to} style={itemStyle} onClick={close}
+                        onMouseEnter={hoverOn} onMouseLeave={hoverOff}
+                      >
+                        {inner}
+                      </a>
+                    ) : (
+                      <Link to={to} style={itemStyle} onClick={close}
+                        onMouseEnter={hoverOn} onMouseLeave={hoverOff}
+                      >
+                        {inner}
+                      </Link>
+                    )}
                   </motion.div>
                 )
-
-                return hash ? (
-                  <a key={label} href={to} onClick={() => setMenuOpen(false)} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    {inner}
-                  </a>
-                ) : (
-                  <Link key={label} to={to} onClick={() => setMenuOpen(false)} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    {inner}
-                  </Link>
-                )
               })}
-              <div style={{ borderTop: `1px solid ${HAIR2}` }} />
             </nav>
 
-            {/* Bottom — phone + CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, delay: 0.38, ease: 'easeOut' }}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, paddingTop: 28 }}
+            {/* Bottom CTA strip — fixed to sheet bottom with safe-area inset */}
+            <div
+              className="flex shrink-0 items-center justify-between gap-4 px-5 py-4"
+              style={{
+                borderTop: `1px solid ${HAIR2}`,
+                backgroundColor: '#08080a',
+                // env(safe-area-inset-bottom) accounts for iPhone home indicator
+                paddingBottom: 'max(16px, env(safe-area-inset-bottom))',
+              }}
             >
               <a
                 href="tel:7025517315"
                 style={{
-                  fontFamily: '"Barlow Condensed", sans-serif',
-                  fontSize: 13, letterSpacing: '0.12em',
-                  color: MUTED, textDecoration: 'none',
+                  fontFamily: '"DM Sans", system-ui, sans-serif',
+                  fontSize: 13, color: MUTED, letterSpacing: '0.02em', fontWeight: 400,
+                  textDecoration: 'none',
+                  minHeight: 44, display: 'flex', alignItems: 'center',
                 }}
               >
                 +1 (702) 551 7315
               </a>
               <Link
                 to="/contact"
-                onClick={() => setMenuOpen(false)}
+                onClick={close}
                 style={{
                   fontFamily: '"Barlow Condensed", sans-serif',
-                  fontWeight: 500, fontSize: 11,
-                  letterSpacing: '0.26em', textTransform: 'uppercase',
-                  color: INK, padding: '14px 24px',
+                  fontWeight: 500, fontSize: 11, letterSpacing: '0.24em',
+                  textTransform: 'uppercase', color: INK,
+                  padding: '12px 20px',
                   border: `1px solid ${GOLD}`,
-                  textDecoration: 'none', whiteSpace: 'nowrap',
+                  backgroundColor: 'rgba(201,169,97,0.1)',
+                  whiteSpace: 'nowrap', textDecoration: 'none',
+                  minHeight: 44, display: 'flex', alignItems: 'center',
+                  transition: 'background-color 0.2s',
                 }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(201,169,97,0.2)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.backgroundColor = 'rgba(201,169,97,0.1)' }}
               >
                 Request a Quote
               </Link>
-            </motion.div>
+            </div>
+            </div> {/* end content stop-propagation wrapper */}
           </motion.div>
         )}
       </AnimatePresence>
-
-      <style>{`
-        @media (max-width: 900px) {
-          .nav-links-desktop { display: none !important; }
-          .nav-right-desktop { display: none !important; }
-          .nav-logo-link {
-            grid-column: 2;
-            grid-row: 1;
-            justify-self: center !important;
-          }
-          .nav-hamburger {
-            grid-column: 3;
-            grid-row: 1;
-            justify-self: end;
-          }
-        }
-        @media (min-width: 901px) {
-          .nav-hamburger { display: none !important; }
-          .nav-logo-link {
-            grid-column: 1;
-            grid-row: 1;
-            justify-self: start !important;
-          }
-        }
-        .mobile-nav-item:hover .mobile-nav-label { color: ${GOLD}; }
-      `}</style>
-    </header>
+    </>
   )
 }
