@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { usePageMeta } from '../hooks/usePageMeta'
 import { serviceGroups } from '../data/services'
+import InstagramLink from '../components/InstagramLink'
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const BG   = '#0A0A0A'
@@ -18,49 +19,45 @@ const GOLDS = '#C9A000'
 /** Matches ContactInfo / business inbox */
 const CONTACT_EMAIL = 'inmotionwraps@gmail.com'
 
-/** Temporary full-bleed hero (replace with on-brand photography when ready). */
-const HERO_BG_IMAGE =
-  'https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=2400&q=80'
+/** Full-bleed hero background */
+const HERO_BG_IMAGE = '/photos/Hero.webp'
 
 // ─── Work cases ──────────────────────────────────────────────────────────────
 const CASES = [
   {
     num: '042',
-    title: 'Satin Slate\nColour Change',
+    title: 'Vehicle Wraps & Graphics',
     category: 'Full Wrap',
     accent: '#C9A961',
     glow: 'rgba(201,169,97,0.14)',
     gradient: 'radial-gradient(ellipse 70% 60% at 55% 42%, #1e1a12 0%, #0a0a08 58%, #040402 100%)',
     hatch: 'repeating-linear-gradient(140deg, rgba(255,255,255,.016) 0 2px, transparent 2px 20px)',
-    imageUrl:
-      'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1600&q=80',
-    specs: { material: '3M 2080 M21', install: '2 days', year: '2026' },
+    imageUrl: '/photos/full%20Wrap2.webp',
+    imageAlt: 'Full vehicle wrap and custom graphics',
     featured: true,
   },
   {
     num: '039',
-    title: 'Fleet Livery\nProgramme',
+    title: 'Commercial & Fleet Branding',
     category: 'Fleet Branding',
     accent: '#7AAFC4',
     glow: 'rgba(122,175,196,0.11)',
     gradient: 'radial-gradient(ellipse 65% 55% at 58% 38%, #0c1820 0%, #060d12 55%, #030508 100%)',
     hatch: 'repeating-linear-gradient(90deg, rgba(255,255,255,.01) 0 1px, transparent 1px 28px)',
-    imageUrl:
-      'https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=1600&q=80',
-    specs: { material: 'Avery MPI 1105', install: '8 days', year: '2025' },
+    imageUrl: '/photos/commercial1.webp',
+    imageAlt: 'Commercial fleet vehicle branding and wraps',
     featured: false,
   },
   {
     num: '044',
-    title: 'Window\nCampaign',
+    title: 'Windows, Walls & Signs',
     category: 'Signs & Decals',
     accent: '#9B8FC9',
     glow: 'rgba(155,143,201,0.11)',
     gradient: 'radial-gradient(ellipse 60% 55% at 50% 44%, #110f1c 0%, #090710 55%, #040306 100%)',
     hatch: 'repeating-linear-gradient(180deg, rgba(255,255,255,.01) 0 1px, transparent 1px 22px)',
-    imageUrl:
-      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1600&q=80',
-    specs: { material: '3M Envision', install: '1 day', year: '2026' },
+    imageUrl: '/photos/commercial5.webp',
+    imageAlt: 'Window graphics, wall wraps, and storefront signage',
     featured: false,
   },
 ]
@@ -595,7 +592,6 @@ export default function Home() {
                 }}
               >
                 A curated selection of recent commissions: wraps, fleet livery, and signage.
-                Hover each file to review the spec sheet.
               </div>
               <Link
                 to="/contact"
@@ -740,12 +736,20 @@ export default function Home() {
                 color: INK2,
                 textDecoration: 'none',
                 letterSpacing: '0.01em',
-                marginBottom: 0,
+                marginBottom: 8,
                 transition: 'color 0.2s',
               }}
             >
               {CONTACT_EMAIL}
             </a>
+
+            <InstagramLink
+              size={22}
+              className="contact-email-link"
+              style={{ color: INK2, marginTop: 8, transition: 'color 0.2s' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = INK }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = INK2 }}
+            />
 
           </motion.div>
         </div>
@@ -818,10 +822,9 @@ function WorkCard({ c }: { c: typeof CASES[0] }) {
       >
         <img
           src={c.imageUrl}
-          alt=""
+          alt={c.imageAlt}
           loading="lazy"
           decoding="async"
-          referrerPolicy="no-referrer"
           style={{
             position: 'absolute',
             inset: 0,
@@ -946,40 +949,6 @@ function WorkCard({ c }: { c: typeof CASES[0] }) {
           padding: '0 28px 28px',
         }}
       >
-        {/* Spec sheet — slides up on hover */}
-        <div
-          style={{
-            overflow: 'hidden',
-            maxHeight: hovered ? 96 : 0,
-            marginBottom: hovered ? 14 : 0,
-            transition: 'max-height 0.45s cubic-bezier(0.2,0.8,0.2,1), margin-bottom 0.3s',
-          }}
-        >
-          <div
-            style={{
-              fontFamily: '"Barlow Condensed", sans-serif',
-              fontSize: 10,
-              letterSpacing: '0.28em',
-              textTransform: 'uppercase',
-              color: MUTED,
-              lineHeight: 1.9,
-              paddingBottom: 12,
-              borderBottom: `1px solid rgba(255,255,255,0.07)`,
-              marginBottom: 12,
-            }}
-          >
-            {Object.entries(c.specs).map(([k, v]) => (
-              <div key={k}>
-                <span style={{ color: INK2, fontWeight: 400, letterSpacing: '0.18em' }}>
-                  {k.toUpperCase()}
-                </span>
-                {' '}·{' '}
-                {v.toUpperCase()}
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Title + case number */}
         <div
           style={{

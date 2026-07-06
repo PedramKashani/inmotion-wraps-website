@@ -1,3 +1,5 @@
+import InstagramLink from './InstagramLink'
+
 export default function ContactInfo() {
   return (
     <div className="flex flex-col">
@@ -22,11 +24,16 @@ export default function ContactInfo() {
       {/* Secondary — email sits close to the number, lower weight */}
       <a
         href="mailto:inmotionwraps@gmail.com"
-        className="font-body text-brand-secondary hover:text-brand-text transition-colors duration-200 mb-10"
+        className="font-body text-brand-secondary hover:text-brand-text transition-colors duration-200 mb-3"
         style={{ fontSize: 13, letterSpacing: '0.01em' }}
       >
         inmotionwraps@gmail.com
       </a>
+
+      <InstagramLink
+        size={22}
+        className="text-brand-secondary hover:text-brand-text transition-colors duration-200 mb-10"
+      />
 
       {/* Thin rule separates contact from supporting context */}
       <div className="border-t border-brand-border mb-7" />

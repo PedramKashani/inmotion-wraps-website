@@ -9,17 +9,18 @@ interface ServiceCategorySectionProps {
   index: number;
 }
 
-const externalCategoryImages: Record<string, string> = {
-  /** Gloved tech working a vehicle hood in-shop — reads clearly as hands-on wrap / finish work */
-  "wraps-graphics":
-    "https://images.unsplash.com/photo-1632605157148-6313421c504b?auto=format&fit=crop&w=1600&q=80",
-  /** https://unsplash.com/photos/a-black-and-white-photo-of-a-store-window-SYquPBkhKl8 */
-  "signs-decals":
-    "https://images.unsplash.com/photo-1740955803167-be35f9bfddd2?auto=format&fit=crop&w=1600&q=80",
-  /** On-brand booth / large-format mock — asset in `/public` */
-  "banners-trade-show": "/services-banners-trade-show.webp",
-  /** On-brand marketing print & stationery mock — asset in `/public` */
-  "marketing-print": "/services-marketing-print.webp",
+const categoryImages: Record<string, string> = {
+  "wraps-graphics": "/photos/commercial2.webp",
+  "signs-decals": "/photos/window1.webp",
+  "banners-trade-show": "/photos/marketing-tradeshow.webp",
+  "marketing-print": "/photos/marketing.webp",
+};
+
+const categoryImageAlt: Record<string, string> = {
+  "wraps-graphics": "Commercial vehicle wrap and graphics installation",
+  "signs-decals": "Storefront window graphics and signage",
+  "banners-trade-show": "Trade show booth with banners and large-format displays",
+  "marketing-print": "Marketing print materials including brochures and business cards",
 };
 
 function CategoryVisualPanel({
@@ -59,21 +60,10 @@ function CategoryVisualPanel({
       </span>
       <div className="relative z-10 h-full min-h-[inherit]">
         <img
-          src={externalCategoryImages[categoryId]}
-          alt={
-            categoryId === "wraps-graphics"
-              ? "Technician in gloves working on a vehicle finish in the shop"
-              : categoryId === "signs-decals"
-                ? "Black and white photograph of a retail store window"
-                : categoryId === "banners-trade-show"
-                  ? "Trade show booth with banners, fabric displays, flags, and large-format signage"
-                  : categoryId === "marketing-print"
-                    ? "Marketing products and stationery: brochures, business cards, labels, and branded print on display"
-                    : "Example photograph for this service category"
-          }
+          src={categoryImages[categoryId]}
+          alt={categoryImageAlt[categoryId] ?? "InMotion Wraps service example"}
           loading="lazy"
           className="h-full w-full object-cover"
-          referrerPolicy={externalCategoryImages[categoryId].startsWith("http") ? "no-referrer" : undefined}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
         <div className="absolute right-5 bottom-5 text-brand-accent/90 scale-[1.1] lg:scale-[1.2] drop-shadow-[0_0_30px_rgba(245,196,0,0.2)]">

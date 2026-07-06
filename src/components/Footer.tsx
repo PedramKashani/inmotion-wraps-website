@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import logoSrc from '../assets/logo-light.webp'
+import InstagramLink from './InstagramLink'
 
 const HAIR = '#1C1C1C'
 const MUTED = '#6E6A63'
@@ -68,9 +69,15 @@ export default function Footer() {
           ))}
         </nav>
 
-        <span style={{ fontSize: 11, letterSpacing: '0.28em', textTransform: 'uppercase' }}>
-          Cert. 3M &amp; Avery · (702) 551-7315
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', fontSize: 11, letterSpacing: '0.28em', textTransform: 'uppercase' }}>
+          <span>Cert. 3M &amp; Avery · (702) 551-7315</span>
+          <InstagramLink
+            size={18}
+            style={{ color: MUTED, transition: 'color 0.25s' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = GOLD }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = MUTED }}
+          />
+        </div>
       </div>
 
       {/* Copyright rule */}

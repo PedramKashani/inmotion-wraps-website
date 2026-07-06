@@ -16,12 +16,15 @@ const NAV_LINKS = [
 ]
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpenAtPath, setMenuOpenAtPath] = useState<string | null>(null)
   const [scrolled, setScrolled]   = useState(false)
   const reduceMotion  = useReducedMotion()
   const location      = useLocation()
   const hamburgerRef  = useRef<HTMLButtonElement>(null)
   const prevOpenRef   = useRef(false)
+  const menuOpen = menuOpenAtPath === location.pathname
+
+  const closeMenu = () => setMenuOpenAtPath(null)
 
   // Scroll tracking
   useEffect(() => {
@@ -32,7 +35,7 @@ export default function Navbar() {
 
   // Close menu on desktop resize
   useEffect(() => {
-    const onResize = () => { if (window.innerWidth > 900) setMenuOpen(false) }
+    const onResize = () => { if (window.innerWidth > 900) closeMenu() }
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
   }, [])
@@ -57,9 +60,6 @@ export default function Navbar() {
     }
   }, [menuOpen])
 
-  // Close menu on any React Router route change (back/forward, programmatic nav).
-  useEffect(() => { setMenuOpen(false) }, [location.pathname])
-
   // Restore focus to the hamburger when menu closes so keyboard users don't lose context.
   useEffect(() => {
     if (prevOpenRef.current && !menuOpen) hamburgerRef.current?.focus()
@@ -69,12 +69,12 @@ export default function Navbar() {
   // Escape key closes menu
   useEffect(() => {
     if (!menuOpen) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false) }
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeMenu() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [menuOpen])
 
-  const close = () => setMenuOpen(false)
+  const close = closeMenu
 
   const linkStyle: React.CSSProperties = {
     fontFamily: '"Barlow Condensed", sans-serif',
@@ -216,7 +216,7 @@ export default function Navbar() {
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             padding: 10,
           }}
-          onClick={() => setMenuOpen(v => !v)}
+          onClick={() => setMenuOpenAtPath(menuOpen ? null : location.pathname)}
           aria-label={menuOpen ? 'Close menu' : 'Open menu'}
           aria-expanded={menuOpen}
           aria-controls="mobile-nav-sheet"
