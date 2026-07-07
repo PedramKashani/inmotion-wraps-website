@@ -6,12 +6,20 @@ import Footer from './components/Footer'
 import Cursor from './components/Cursor'
 import ScrollProgress from './components/ScrollProgress'
 import Marquee from './components/Marquee'
+import JsonLd from './components/JsonLd'
 import Home from './pages/Home'
 import Services from './pages/Services'
 import Contact from './pages/Contact'
 import { serviceMarqueeTags } from './data/services'
+import { usePageMeta } from './hooks/usePageMeta'
 
 function NotFound() {
+  usePageMeta({
+    title: 'Page Not Found | InMotion Wraps & Print',
+    description: 'The page you requested could not be found. Visit InMotion Wraps & Print for vehicle wraps, signs, and printing in Las Vegas.',
+    path: '/404',
+    noindex: true,
+  })
   return (
     <main style={{ backgroundColor: '#0A0A0A', color: '#EDEAE4', minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 'clamp(48px, 10vh, 80px) clamp(16px, 6vw, 24px)' }}>
       <div style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: 'clamp(6rem, 20vw, 14rem)', lineHeight: 1, color: '#1C1C1C', userSelect: 'none' }}>404</div>
@@ -65,6 +73,7 @@ export default function App() {
     <BrowserRouter>
       <Cursor />
       <ScrollProgress />
+      <JsonLd />
       <ScrollToTop />
       <Navbar />
       {/* Marquee pinned to bottom of viewport */}

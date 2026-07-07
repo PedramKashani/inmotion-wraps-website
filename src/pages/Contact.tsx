@@ -4,10 +4,12 @@ import ContactInfo from '../components/ContactInfo'
 import { usePageMeta } from '../hooks/usePageMeta'
 
 export default function Contact() {
-  usePageMeta(
-    'Contact, InMotion Wraps & Print | Request a Quote',
-    'Request a quote from InMotion Wraps & Print LLC, vehicle wraps, signs, banners, trade show graphics, or marketing print. Call (702) 551-7315. We respond within one business day.',
-  )
+  usePageMeta({
+    title: 'Contact InMotion Wraps & Print | Request a Quote | Las Vegas',
+    description:
+      'Request a quote for vehicle wraps, signs, banners, trade show graphics, or marketing print in Las Vegas. Call (702) 551-7315 — we respond within one business day.',
+    path: '/contact',
+  })
 
   return (
     <main className="bg-brand-bg">

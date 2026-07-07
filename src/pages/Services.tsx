@@ -46,6 +46,7 @@ function CategoryStrip({ onSelect }: { onSelect: (id: string) => void }) {
             type="button"
             variants={cardVariants}
             onClick={() => onSelect(g.id)}
+            aria-label={`Jump to ${g.shortTitle} services section`}
             style={{
               position: 'relative',
               display: 'flex',
@@ -168,10 +169,13 @@ function CategoryStrip({ onSelect }: { onSelect: (id: string) => void }) {
 }
 
 export default function Services() {
-  usePageMeta(
-    "Services, InMotion Wraps & Print | Wraps, Signs, Banners & Marketing Print",
-    "InMotion Wraps & Print LLC, wraps, fleet graphics, signs, decals, banners, trade show hardware, and marketing print. Produced in-house. (702) 551-7315.",
-  );
+  usePageMeta({
+    title: 'Vehicle Wrap & Print Services | InMotion Wraps & Print | Las Vegas',
+    description:
+      'Vehicle wraps, fleet graphics, signs, decals, banners, trade show displays, and marketing print — produced in-house in Las Vegas. Call (702) 551-7315.',
+    path: '/services',
+    ogImage: '/photos/commercial2.webp',
+  });
 
   const scrollTo = (id: string) => {
     document
@@ -184,7 +188,7 @@ export default function Services() {
       <PageHero
         label="What We Do"
         headline="Services Built for Impact"
-        subtext="Four production lines, one team, from vinyl and large format through install and fulfillment."
+        subtext="Four production lines, one Las Vegas team — from vinyl and large format through install and fulfillment."
       />
 
       <section style={{ borderBottom: `1px solid ${DIVIDER}`, backgroundColor: '#0D0D0D' }}>

@@ -63,6 +63,9 @@ function CategoryVisualPanel({
           src={categoryImages[categoryId]}
           alt={categoryImageAlt[categoryId] ?? "InMotion Wraps service example"}
           loading="lazy"
+          decoding="async"
+          width={800}
+          height={600}
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
@@ -238,9 +241,9 @@ export default function ServiceCategorySection({
                 <ul className="divide-y divide-brand-border/80">
                   {items.map((item) => (
                     <li key={item.name} className="py-3.5 first:pt-3">
-                      <p className="font-heading font-semibold text-brand-text text-sm leading-snug">
+                      <h3 className="font-heading font-semibold text-brand-text text-sm leading-snug">
                         {item.name}
-                      </p>
+                      </h3>
                       <p className="text-brand-muted text-xs mt-1 leading-relaxed">
                         {item.description}
                       </p>

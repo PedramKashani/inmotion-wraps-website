@@ -32,7 +32,7 @@ const CASES = [
     glow: 'rgba(201,169,97,0.14)',
     gradient: 'radial-gradient(ellipse 70% 60% at 55% 42%, #1e1a12 0%, #0a0a08 58%, #040402 100%)',
     hatch: 'repeating-linear-gradient(140deg, rgba(255,255,255,.016) 0 2px, transparent 2px 20px)',
-    imageUrl: '/photos/full%20Wrap2.webp',
+    imageUrl: '/photos/full-wrap2.webp',
     imageAlt: 'Full vehicle wrap and custom graphics',
     featured: true,
   },
@@ -79,10 +79,12 @@ const Arrow = () => (
 
 // ─── Component ───────────────────────────────────────────────────────────────
 export default function Home() {
-  usePageMeta(
-    'InMotion Wraps & Print | Vehicle Wraps, Signs & Printing',
-    'InMotion Wraps & Print LLC: vehicle wraps, fleet graphics, signs and decals, trade show displays, large format printing, and marketing materials. Call (702) 551-7315.',
-  )
+  usePageMeta({
+    title: 'InMotion Wraps & Print | Vehicle Wraps, Signs & Printing in Las Vegas',
+    description:
+      'InMotion Wraps & Print LLC — vehicle wraps, fleet graphics, signs, decals, trade show displays, and large-format printing in Las Vegas. Call (702) 551-7315.',
+    path: '/',
+  })
 
   const heroImageRef = useRef<HTMLDivElement>(null)
 
@@ -130,15 +132,35 @@ export default function Home() {
             zIndex: -2,
             overflow: 'hidden',
             backgroundColor: '#060606',
-            backgroundImage: `
-              radial-gradient(ellipse 58% 70% at 72% 42%, rgba(10,10,10,0.15) 0%, rgba(5,5,5,0.62) 72%, rgba(4,4,4,0.9) 100%),
-              radial-gradient(ellipse 38% 65% at 82% 36%, rgba(201,169,97,.08) 0%, transparent 52%),
-              url(${HERO_BG_IMAGE})
-            `,
-            backgroundSize: 'cover, cover, cover',
-            backgroundPosition: 'center, center, 68% center',
           }}
         >
+          <img
+            src={HERO_BG_IMAGE}
+            alt="Full vehicle wrap and fleet graphics by InMotion Wraps in Las Vegas"
+            fetchPriority="high"
+            decoding="async"
+            width={1920}
+            height={1080}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: '68% center',
+            }}
+          />
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `
+                radial-gradient(ellipse 58% 70% at 72% 42%, rgba(10,10,10,0.15) 0%, rgba(5,5,5,0.62) 72%, rgba(4,4,4,0.9) 100%),
+                radial-gradient(ellipse 38% 65% at 82% 36%, rgba(201,169,97,.08) 0%, transparent 52%)
+              `,
+            }}
+          />
           <div
             style={{
               position: 'absolute',
@@ -281,7 +303,7 @@ export default function Home() {
                 letterSpacing: '0.01em',
               }}
             >
-              Vehicle wraps, fleet graphics, and large-format work.
+              Vehicle wraps, fleet graphics, and large-format work in Las Vegas.
             </motion.p>
             <motion.p
               initial={{ opacity: 0, y: 6 }}
@@ -825,6 +847,8 @@ function WorkCard({ c }: { c: typeof CASES[0] }) {
           alt={c.imageAlt}
           loading="lazy"
           decoding="async"
+          width={800}
+          height={600}
           style={{
             position: 'absolute',
             inset: 0,

@@ -41,6 +41,7 @@ export default function Footer() {
           style={{ display: 'flex', gap: 32, fontSize: 11, letterSpacing: '0.28em', textTransform: 'uppercase' }}
         >
           {[
+            { to: '/services', label: 'Services', hash: false },
             { to: '/#capabilities', label: 'Capabilities', hash: true },
             { to: '/#work', label: 'Work', hash: true },
             { to: '/contact', label: 'Contact', hash: false },
@@ -70,7 +71,14 @@ export default function Footer() {
         </nav>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap', fontSize: 11, letterSpacing: '0.28em', textTransform: 'uppercase' }}>
-          <span>Cert. 3M &amp; Avery · (702) 551-7315</span>
+          <a
+            href="tel:+17025517315"
+            style={{ color: MUTED, textDecoration: 'none', transition: 'color 0.25s' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = GOLD }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = MUTED }}
+          >
+            Cert. 3M &amp; Avery · (702) 551-7315
+          </a>
           <InstagramLink
             size={18}
             style={{ color: MUTED, transition: 'color 0.25s' }}
