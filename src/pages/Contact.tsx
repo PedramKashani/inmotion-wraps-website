@@ -5,7 +5,7 @@ import { usePageMeta } from '../hooks/usePageMeta'
 
 export default function Contact() {
   usePageMeta({
-    title: 'Contact InMotion Wraps & Print | Request a Quote | Las Vegas',
+    title: 'Contact | InMotion Wraps & Print',
     description:
       'Request a quote for vehicle wraps, signs, banners, trade show graphics, or marketing print in Las Vegas. Call (702) 551-7315 — we respond within one business day.',
     path: '/contact',

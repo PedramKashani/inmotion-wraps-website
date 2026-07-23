@@ -80,7 +80,7 @@ const Arrow = () => (
 // ─── Component ───────────────────────────────────────────────────────────────
 export default function Home() {
   usePageMeta({
-    title: 'InMotion Wraps & Print | Vehicle Wraps, Signs & Printing in Las Vegas',
+    title: 'InMotion Wraps & Print | Las Vegas',
     description:
       'InMotion Wraps & Print LLC — vehicle wraps, fleet graphics, signs, decals, trade show displays, and large-format printing in Las Vegas. Call (702) 551-7315.',
     path: '/',

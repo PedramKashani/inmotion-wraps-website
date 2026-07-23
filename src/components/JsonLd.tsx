@@ -112,7 +112,7 @@ function buildSchema(pathname: string) {
       '@type': 'ContactPage',
       '@id': absoluteUrl('/contact'),
       url: absoluteUrl('/contact'),
-      name: 'Contact InMotion Wraps & Print | Request a Quote',
+      name: 'Contact | InMotion Wraps & Print',
       description: 'Request a quote for vehicle wraps, signs, banners, or marketing print in Las Vegas.',
       isPartOf: { '@id': `${SITE_URL}/#website` },
       about: { '@id': `${SITE_URL}/#localbusiness` },
