@@ -1,3 +1,95 @@
 {
+  "redirects": [
+    {
+      "source": "/fleet-decals-graphics/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/window-wraps-graphics/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/wall-wrap-graphics-decals/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/floor-decals-graphics/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/retail-signs-graphics/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/event-tradeshow-graphics/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/vehicle-color-change-wrapping-accents/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/vinyl-wrap-installation-safe-vinyl-removal/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/commercial-services/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/graphic-design-las-vegas/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/large-format-printing/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/signs/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/banners/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/marketing-products/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/wraps/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/las-vegas-printing/:path*",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/get-a-free-quote/:path*",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/wrap-news/:path*",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

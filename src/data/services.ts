@@ -32,10 +32,10 @@ export const serviceGroups: ServiceGroupData[] = [
     title: 'Wraps & Commercial Graphics',
     shortTitle: 'Wraps',
     summary:
-      'Fleet and vehicle wraps, colour-change films, certified install & removal, plus window, wall, floor, and retail graphics for commercial spaces.',
+      'Fleet and vehicle wraps, color-change films, certified install & removal, plus window, wall, floor, and retail graphics for commercial spaces.',
     overviewTagline: 'Fleet, vehicles & built environments',
     previewBullets: [
-      'Fleet wraps and full colour-change programs with certified install',
+      'Fleet wraps and full color-change programs with certified install',
       'Safe removal, rebrands, and lease-return ready finishes',
       'Window perf, wall murals, floor graphics, and retail campaigns',
       'Commercial rollouts with one team from proof to installation',
@@ -47,11 +47,11 @@ export const serviceGroups: ServiceGroupData[] = [
       },
       {
         name: 'Full & partial vehicle wraps',
-        description: 'Complete colour changes or targeted panels on cars, vans, trucks, trailers, and specialty vehicles.',
+        description: 'Complete color changes or targeted panels on cars, vans, trucks, trailers, and specialty vehicles.',
       },
       {
-        name: 'Vehicle colour change & accent wraps',
-        description: 'Satin, gloss, matte, and textured films for accents, roofs, hoods, and full colour flips.',
+        name: 'Vehicle color change & accent wraps',
+        description: 'Satin, gloss, matte, and textured films for accents, roofs, hoods, and full color flips.',
       },
       {
         name: 'Vinyl wrap installation',
@@ -220,7 +220,7 @@ export const serviceGroups: ServiceGroupData[] = [
       },
       {
         name: 'Postcards & direct mail',
-        description: 'Standard sizes, variable data options, and Canada Post–friendly formats.',
+        description: 'Standard sizes, variable-data options, and mailing-ready formats for local and nationwide campaigns.',
       },
       {
         name: 'Roll labels',
@@ -277,7 +277,7 @@ export const contactInquiryOptions: string[] = [
 /** Home marquee, scannable mix of offerings */
 export const serviceMarqueeTags: string[] = [
   'Fleet Wraps',
-  'Vehicle Colour Change',
+  'Vehicle Color Change',
   'Vinyl Removal',
   'Window Perforation',
   'Wall Wraps',

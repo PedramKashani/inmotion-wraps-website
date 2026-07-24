@@ -715,7 +715,7 @@ export default function Home() {
                 lineHeight: 1.7,
               }}
             >
-              Fleet wrap, colour change, storefront vinyl, or large-format. Reach out and
+              Fleet wrap, color change, storefront vinyl, or large-format. Reach out and
               we'll respond within one business day.
             </p>
             <div style={{ marginTop: 64 }}>

@@ -188,11 +188,28 @@ export default function Services() {
       <PageHero
         label="What We Do"
         headline="Services Built for Impact"
-        subtext="Four production lines, one Las Vegas team — from vinyl and large format through install and fulfillment."
+        subtext="Four production lines, one Las Vegas team — from vehicle wraps and large-format printing through installation and fulfillment."
       />
 
+      <section style={{ backgroundColor: '#0D0D0D' }} aria-label="About our services">
+        <div className="max-w-7xl mx-auto px-6 pt-10 pb-2 lg:pt-12">
+          <p
+            style={{
+              fontFamily: '"DM Sans", sans-serif',
+              fontWeight: 400,
+              fontSize: 'clamp(0.9375rem, 1.5vw, 1.0625rem)',
+              lineHeight: 1.65,
+              color: INK2,
+              maxWidth: '42rem',
+            }}
+          >
+            InMotion Wraps & Print provides vehicle wraps, fleet graphics, signs, banners, decals, and commercial printing for businesses throughout Las Vegas and Southern Nevada.
+          </p>
+        </div>
+      </section>
+
       <section style={{ borderBottom: `1px solid ${DIVIDER}`, backgroundColor: '#0D0D0D' }}>
-        <div className="max-w-7xl mx-auto px-6 pt-10 pb-0 lg:pt-12">
+        <div className="max-w-7xl mx-auto px-6 pt-8 pb-0 lg:pt-10">
           <p style={{
             fontFamily: '"Barlow Condensed", sans-serif',
             fontWeight: 500,
