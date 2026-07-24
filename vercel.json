@@ -1,92 +1,182 @@
 {
   "redirects": [
     {
-      "source": "/fleet-decals-graphics/:path*",
+      "source": "/fleet-decals-graphics",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/window-wraps-graphics/:path*",
+      "source": "/fleet-decals-graphics/",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/wall-wrap-graphics-decals/:path*",
+      "source": "/window-wraps-graphics",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/floor-decals-graphics/:path*",
+      "source": "/window-wraps-graphics/",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/retail-signs-graphics/:path*",
+      "source": "/wall-wrap-graphics-decals",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/event-tradeshow-graphics/:path*",
+      "source": "/wall-wrap-graphics-decals/",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/vehicle-color-change-wrapping-accents/:path*",
+      "source": "/floor-decals-graphics",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/vinyl-wrap-installation-safe-vinyl-removal/:path*",
+      "source": "/floor-decals-graphics/",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/commercial-services/:path*",
+      "source": "/retail-signs-graphics",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/graphic-design-las-vegas/:path*",
+      "source": "/retail-signs-graphics/",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/large-format-printing/:path*",
+      "source": "/event-tradeshow-graphics",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/signs/:path*",
+      "source": "/event-tradeshow-graphics/",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/banners/:path*",
+      "source": "/vehicle-color-change-wrapping-accents",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/marketing-products/:path*",
+      "source": "/vehicle-color-change-wrapping-accents/",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/wraps/:path*",
+      "source": "/vinyl-wrap-installation-safe-vinyl-removal",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/las-vegas-printing/:path*",
+      "source": "/vinyl-wrap-installation-safe-vinyl-removal/",
       "destination": "/services",
       "permanent": true
     },
     {
-      "source": "/get-a-free-quote/:path*",
+      "source": "/commercial-services",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/commercial-services/",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/graphic-design-las-vegas",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/graphic-design-las-vegas/",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/large-format-printing",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/large-format-printing/",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/signs",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/signs/",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/banners",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/banners/",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/marketing-products",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/marketing-products/",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/wraps",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/wraps/",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/las-vegas-printing",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/las-vegas-printing/",
+      "destination": "/services",
+      "permanent": true
+    },
+    {
+      "source": "/get-a-free-quote",
       "destination": "/contact",
       "permanent": true
     },
     {
-      "source": "/wrap-news/:path*",
+      "source": "/get-a-free-quote/",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/wrap-news",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/wrap-news/",
       "destination": "/",
       "permanent": true
     }
